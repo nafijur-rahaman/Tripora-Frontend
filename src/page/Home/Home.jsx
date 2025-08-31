@@ -1,11 +1,19 @@
 import React from 'react';
 import Hero from '../../components/Hero/Hero';
 import JourneySection from '../../components/JourneySection/JourneySection';
+import TeamSection from '../../components/TeamSection/TeamSection';
+import Testimonials from '../../components/Testimonials/Testimonilas';
+import JourneyTimeline from '../../components/JourneyTimeline/JourneyTimeline';
+
+
 const Home = () => {
     return (
         <div>
-          <Hero></Hero>
-          <JourneySection></JourneySection>
+         <Hero></Hero>
+         <JourneySection></JourneySection>
+         <JourneyTimeline></JourneyTimeline>
+         <TeamSection></TeamSection>
+         <Testimonials></Testimonials>
         </div>
     );
 };
