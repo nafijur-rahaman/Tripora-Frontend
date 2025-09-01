@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { NavLink } from 'react-router';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ export default function Login() {
   };
 
   return (
-    <section className="py-16 bg-gray-50" id="login">
+    <section className="py-30 bg-gray-50" id="login">
       <div className="max-w-md mx-auto bg-white rounded-3xl p-8 shadow-xl">
         <motion.h2
           className="text-3xl font-extrabold text-center mb-6 text-gray-800"
@@ -73,7 +74,7 @@ export default function Login() {
               <input type="checkbox" name="remember" checked={formData.remember} onChange={handleChange} />
               Remember Me
             </label>
-            <a href="#register" className="text-sky-500 hover:underline text-sm">Create Account</a>
+            <NavLink to="/register" className="text-sky-500 hover:underline text-sm">Create Account</NavLink>
           </div>
 
           {error && <p className="text-red-500 text-sm">{error}</p>}
@@ -95,17 +96,8 @@ export default function Login() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <img src="/icons/google.svg" alt="Google" className="w-6 h-6" />
+            <img src="/google.png" alt="Google" className="w-6 h-6" />
             Continue with Google
-          </motion.button>
-
-          <motion.button
-            className="w-full py-3 border border-gray-300 rounded-xl flex items-center justify-center gap-3 hover:bg-gray-100 transition"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <img src="/icons/facebook.svg" alt="Facebook" className="w-6 h-6" />
-            Continue with Facebook
           </motion.button>
         </div>
       </div>

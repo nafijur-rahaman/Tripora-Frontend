@@ -15,6 +15,7 @@ import {
   PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
+import { NavLink } from "react-router";
 
 // --- Helper Components ---
 const DropLink = ({ title, icon: Icon, onClick }) => (
@@ -93,12 +94,12 @@ export default function Navbar() {
           {/* Desktop Auth Section */}
           <div className="hidden md:flex items-center gap-2">
             {!user ? (
-              <a
-                href="#"
+              <NavLink
+                to="/login"
                 className="px-4 py-2 rounded-xl bg-white text-slate-900 font-semibold hover:opacity-90 transition text-sm"
               >
                 Login
-              </a>
+              </NavLink>
             ) : (
               <div className="relative">
                 <button
@@ -201,12 +202,12 @@ export default function Navbar() {
             {/* Auth Buttons */}
             <div className="mt-auto grid gap-3">
               {!user ? (
-                <a
-                  href="#"
+                <NavLink
+                  to="/login"
                   className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
                 >
                   Login
-                </a>
+                </NavLink>
               ) : (
                 <>
                   <a
