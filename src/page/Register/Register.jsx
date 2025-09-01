@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { motion } from 'framer-motion';
+import { AuthContext } from '../../Context/AuthContext';
 
 export default function Register() {
+  const {RegisterUser} = use(AuthContext);
+  console.log(RegisterUser);
+
+  const [error, setError] = useState('');
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -11,7 +16,6 @@ export default function Register() {
     role: 'Traveler',
   });
 
-  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
