@@ -1,40 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 import {
   Plane,
-  Map,
-  Calendar,
-  Percent,
-  HelpCircle,
-  Search,
   Menu,
   X,
-  UserRound,
   ChevronDown,
-  Package,
   LogOut,
   PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
 import { NavLink } from "react-router";
+import { AuthContext } from "../../Context/AuthContext";
+import { DropLink } from "../DropLink/DropLink";
 
-// --- Helper Components ---
-const DropLink = ({ title, icon: Icon, onClick }) => (
-  <button
-    onClick={onClick}
-    className="flex items-center gap-2 p-3 rounded-xl hover:bg-white/10 transition w-full text-left"
-  >
-    <Icon className="w-4 h-4" />
-    <span className="text-sm font-medium">{title}</span>
-  </button>
-);
+
+
+
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
-  // Dummy authentication
-  const user = null; // Change to null or "" for non-auth
+  const {user} = use(AuthContext);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -75,9 +63,9 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-4 text-white">
-            <a href="#" className="hover:underline">
+            <NavLink to="/" className="hover:underline">
               Home
-            </a>
+            </NavLink>
             <a href="#" className="hover:underline">
               All Packages
             </a>
@@ -118,7 +106,9 @@ export default function Navbar() {
                   />
                 </button>
                 {profileOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-white/20 ring-1 ring-white/30 backdrop-blur-lg shadow-lg text-white p-2">
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/80  ring-white/15  ring-1  backdrop-blur-lg shadow-lg text-white p-2">
+
+                  
                     <DropLink
                       title="Add Package"
                       icon={PlusCircle}
@@ -183,9 +173,9 @@ export default function Navbar() {
 
             {/* Links */}
             <div className="mt-6 space-y-4 text-white/95">
-              <a href="#" className="block py-2 px-3 rounded-xl bg-white/10">
+              <NavLink to="/" className="block py-2 px-3 rounded-xl bg-white/10">
                 Home
-              </a>
+              </NavLink>
               <a href="#" className="block py-2 px-3 rounded-xl bg-white/10">
                 All Packages
               </a>

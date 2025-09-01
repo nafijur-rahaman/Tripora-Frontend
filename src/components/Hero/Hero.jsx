@@ -6,7 +6,7 @@ export default function Hero() {
       className="relative w-full h-[90vh] bg-cover bg-center"
       style={{
         backgroundImage:
-          "url('/hero.jpg')",
+          "url('/images/bg_4.jpg')",
       }}
     >
       {/* Overlay */}
@@ -38,7 +38,7 @@ export default function Hero() {
       </div>
 
       {/* Decorative bottom gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white/80 to-transparent"></div>
+      {/* <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white/80 to-transparent"></div> */}
     </section>
   );
 }
