@@ -4,6 +4,7 @@ import JourneySection from '../../components/JourneySection/JourneySection';
 import TeamSection from '../../components/TeamSection/TeamSection';
 import Testimonials from '../../components/Testimonials/Testimonilas';
 import JourneyTimeline from '../../components/JourneyTimeline/JourneyTimeline';
+import TourShowcase from '../../components/TourShowcase/TourShowcase';
 
 
 const Home = () => {
@@ -12,7 +13,7 @@ const Home = () => {
          <Hero></Hero>
          <JourneySection></JourneySection>
          <JourneyTimeline></JourneyTimeline>
-         <TeamSection></TeamSection>
+         <TourShowcase></TourShowcase>
          <Testimonials></Testimonials>
         </div>
     );

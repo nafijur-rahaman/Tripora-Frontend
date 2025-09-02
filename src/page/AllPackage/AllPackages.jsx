@@ -60,6 +60,9 @@ export default function AllPackages() {
 
   return (
     <section className="py-30 bg-gray-50" id="packages">
+
+    
+
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-extrabold text-gray-800">Your Journey Starts Here</h2>
@@ -136,7 +139,7 @@ export default function AllPackages() {
                       <div className="text-lg font-bold text-gray-800 mb-4">Price: ${pkg.price}</div>
                       <NavLink
                         to= {`/package_details/${pkg._id}`}
-                        className="block w-full text-center bg-sky-500 text-white py-2 rounded-xl hover:bg-sky-600 transition"
+                        className="block w-full text-center bg-sky-500 hover:bg-sky-600  text-white py-2 rounded-xl  transition"
                       >
                         View Details
                       </NavLink>

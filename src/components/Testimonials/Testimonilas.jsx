@@ -8,19 +8,19 @@ import 'slick-carousel/slick/slick-theme.css';
 const testimonials = [
   {
     name: 'Emily Johnson',
-    image: '/images/traveler1.jpg',
+    image: '/images/person_1.jpg',
     rating: 5,
     review: 'TravelX made our trip unforgettable! The guides were amazing and every detail was perfect.',
   },
   {
     name: 'David Smith',
-    image: '/images/traveler2.jpg',
+    image: '/images/person_2.jpg',
     rating: 4,
     review: 'A wonderful experience with excellent customer service. Highly recommended!',
   },
   {
-    name: 'Sophia Lee',
-    image: '/images/traveler3.jpg',
+    name: 'Adam Lee',
+    image: '/images/person_4.jpg',
     rating: 5,
     review: 'The best travel experience I have ever had. Professional and friendly guides!',
   },

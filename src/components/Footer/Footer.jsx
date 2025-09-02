@@ -16,7 +16,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600
+    <footer className=" bg-[#00AEEF]
  text-white py-12 relative">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
@@ -25,7 +25,7 @@ const Footer = () => {
           whileInView={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl font-bold mb-4">TravelMate</h2>
+          <h2 className="text-2xl font-bold mb-4">TriPora</h2>
           <p className="text-sm opacity-90">
             Your trusted partner in exploring the world. Discover new places and
             make unforgettable memories with our expert travel management
@@ -95,7 +95,7 @@ const Footer = () => {
             />
             <button
               type="submit"
-              className="bg-yellow-300 text-black font-semibold px-4 py-2 rounded-r-lg hover:bg-yellow-400 transition"
+              className="bg-gradient-to-r from-yellow-300 via-yellow-400 to-yellow-500 text-black font-semibold px-4 py-2 rounded-r-lg hover:bg-yellow-400 transition"
             >
               Subscribe
             </button>
@@ -127,7 +127,7 @@ const Footer = () => {
         transition={{ duration: 0.8, delay: 0.4 }}
         className="text-center text-sm mt-8 border-t border-white/30 pt-4"
       >
-        © {new Date().getFullYear()} TravelMate. All rights reserved.
+        © {new Date().getFullYear()} TriPora. All rights reserved.
       </motion.div>
     </footer>
   );

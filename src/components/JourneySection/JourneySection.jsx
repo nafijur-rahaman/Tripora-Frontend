@@ -55,7 +55,7 @@ export default function JourneySection() {
                 <p className="text-gray-500 text-sm mb-3">Departure: {pkg.departure_date}</p>
                 <div className="flex items-center justify-between">
                   <span className="text-lg font-bold text-sky-500">${pkg.price}</span>
-                  <NavLink to= {`/package_details/${pkg._id}`} className="px-4 py-2 bg-gradient-to-r from-sky-500 via-purple-500 to-pink-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
+                  <NavLink to= {`/package_details/${pkg._id}`} className="px-4 py-2 bg-gradient-to-r bg-sky-500 hover:bg-sky-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition transform hover:scale-105">
                     View Details
                   </NavLink>
                 </div>
@@ -67,9 +67,8 @@ export default function JourneySection() {
         {/* All Packages Button */}
         <div className="text-center mt-12">
           <Link
-            to={'/all_packages'}
-            className="px-6 py-3 bg-sky-500 text-white font-semibold rounded-xl shadow-lg hover:bg-sky-600 transition"
-          >
+            to="/all_packages"
+            className="px-6 py-3 bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600 text-white font-semibold rounded-xl shadow-lg  transition">
             All Packages
           </Link>
         </div>
