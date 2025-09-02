@@ -45,7 +45,7 @@ export const router = createBrowserRouter([
         path: "/add_package",
         element: (
           <PrivateRoute>
-            <MyBooking></MyBooking>
+            <AddPackage></AddPackage>
           </PrivateRoute>
         ),
       },
@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
         path: "/my_packages",
         element: (
           <PrivateRoute>
-            <PrivateRoute></PrivateRoute>
+            <ManageMyPackages></ManageMyPackages>
           </PrivateRoute>
         ),
       },
@@ -65,7 +65,7 @@ export const router = createBrowserRouter([
         path: "/my_bookings",
         element: (
           <PrivateRoute>
-            <PrivateRoute></PrivateRoute>
+            <MyBooking></MyBooking>
           </PrivateRoute>
         ),
       },

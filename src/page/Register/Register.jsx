@@ -14,7 +14,6 @@ export default function Register() {
     photo: "",
     password: "",
     confirmPassword: "",
-    role: "Traveler",
   });
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -56,10 +55,13 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const userCredential = await RegisterUser(
+      const result   = await RegisterUser(
         formData.email,
         formData.password
       );
+
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
 
       await updateUserProfile(formData.fullName, formData.photo);
 
@@ -77,7 +79,6 @@ export default function Register() {
         photo: "",
         password: "",
         confirmPassword: "",
-        role: "Traveler",
       });
     } catch (err) {
       Swal.fire({
@@ -95,6 +96,8 @@ export default function Register() {
     setGoogleLoading(true);
     try {
       const result = await loginWithGoogle();
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
       Swal.fire({
         icon: "success",
         title: "Welcome!",
@@ -194,18 +197,6 @@ export default function Register() {
           {error.confirmPassword && (
             <p className="text-red-500 text-sm">{error.confirmPassword}</p>
           )}
-
-          {/* Role */}
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-sky-500 transition"
-          >
-            <option>Traveler</option>
-            <option>Guide</option>
-            <option>Admin</option>
-          </select>
 
           {/* Submit Button */}
           <motion.button

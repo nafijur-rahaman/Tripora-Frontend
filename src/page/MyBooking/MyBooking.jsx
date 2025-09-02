@@ -10,14 +10,20 @@ export default function MyBooking() {
   const [error, setError] = useState("");
   const { user } = use(AuthContext);
   const userEmail = user?.email;
-  console.log(userEmail);
+  const token = localStorage.getItem("token");
+  // console.log(userEmail);
 
   // Fetch user's bookings
   useEffect(() => {
     const fetchBookings = async () => {
+      if (!token) return;
       try {
         setLoading(true);
-        const res = await axios.get(`http://localhost:3000/api/get_all_bookings?userEmail=${encodeURIComponent(userEmail)}`);
+        const res = await axios.get(`http://localhost:3000/api/get_all_bookings?userEmail=${encodeURIComponent(userEmail)}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setBookings(res.data.data || []);
         console.log(res.data.data);
       } catch (err) {

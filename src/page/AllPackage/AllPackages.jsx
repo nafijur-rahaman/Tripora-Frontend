@@ -9,12 +9,18 @@ export default function AllPackages() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const token = localStorage.getItem("token");
 
   // Fetch packages
   useEffect(() => {
     const fetchPackages = async () => {
+      if (!token) return;
       try {
-        const res = await axios.get("http://localhost:3000/api/get_all_packages/");
+        const res = await axios.get("http://localhost:3000/api/get_all_packages/",{
+          headers: {
+           Authorization: `Bearer ${token}`,
+          },
+        });
         setPackages(Array.isArray(res.data.data) ? res.data.data : []);
       } catch (err) {
         setError("Failed to load packages.");
@@ -24,20 +30,27 @@ export default function AllPackages() {
       }
     };
     fetchPackages();
-  }, []);
+  }, [token]);
 
   // Fetch categories
   useEffect(() => {
+    
     const fetchCategories = async () => {
+      if (!token) return;
+      // console.log(token);
       try {
-        const res = await axios.get("http://localhost:3000/api/categories");
+        const res = await axios.get("http://localhost:3000/api/categories",{
+          headers: {
+           Authorization: `Bearer ${token}`,
+          },
+        });
         setCategories(res.data.map(cat => cat.name));
       } catch (err) {
         console.error(err);
       }
     };
     fetchCategories();
-  }, []);
+  }, [token]);
 
   // Filter packages based on selected category
   const filteredPackages =

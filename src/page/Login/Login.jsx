@@ -39,6 +39,8 @@ export default function Login() {
 
     try {
       const result = await LoginUser(formData.email, formData.password);
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
       Swal.fire({
         icon: "success",
         title: "Welcome Back!",
@@ -64,6 +66,8 @@ export default function Login() {
     setGoogleLoading(true);
     try {
       const result = await loginWithGoogle();
+      const token = await result.user.getIdToken();
+      localStorage.setItem("token", token);
       Swal.fire({
         icon: "success",
         title: "Welcome!",
