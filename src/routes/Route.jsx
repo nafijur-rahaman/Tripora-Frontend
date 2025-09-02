@@ -8,6 +8,7 @@ import PackageDetails from "../page/PackageDetails/PackageDetails";
 import AddPackage from "../page/AddPackage/AddPackage";
 import ManageMyPackages from "../page/ManageMyPackages/ManageMyPackages";
 import AboutUs from "../page/AboutUs/AboutUs";
+import MyBooking from "../page/MyBooking/MyBooking";
 
 
 export const router = createBrowserRouter([
@@ -43,6 +44,9 @@ export const router = createBrowserRouter([
       },{
         path: "/about_us",
         element: <AboutUs></AboutUs>
+      },{
+        path: "/my_bookings",
+        element:<MyBooking></MyBooking>
       }
     ]
   },

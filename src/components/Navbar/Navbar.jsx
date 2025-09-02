@@ -70,9 +70,9 @@ export default function Navbar() {
               All Packages
             </NavLink>
             {user && (
-              <a href="#" className="hover:underline">
+              <NavLink to="/my_bookings" className="hover:underline">
                 My Bookings
-              </a>
+              </NavLink>
             )}
             <NavLink to="/about_us" className="hover:underline">
               About Us
@@ -180,9 +180,9 @@ export default function Navbar() {
                 All Packages
               </NavLink>
               {user && (
-                <a href="#" className="block py-2 px-3 rounded-xl bg-white/10">
+                <NavLink to="/my_bookings"className="block py-2 px-3 rounded-xl bg-white/10">
                   My Bookings
-                </a>
+                </NavLink>
               )}
               <NavLink to={"/about_us"} className="block py-2 px-3 rounded-xl bg-white/10">
                 About Us
