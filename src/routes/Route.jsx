@@ -9,7 +9,8 @@ import AddPackage from "../page/AddPackage/AddPackage";
 import ManageMyPackages from "../page/ManageMyPackages/ManageMyPackages";
 import AboutUs from "../page/AboutUs/AboutUs";
 import MyBooking from "../page/MyBooking/MyBooking";
-
+import Page404 from "../page/Page404/Page404";
+import PrivateRoute from "../Context/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -19,35 +20,59 @@ export const router = createBrowserRouter([
       {
         index: true,
         path: "/",
-        element: <Home></Home>
+        element: <Home></Home>,
       },
       {
-        path:"/login",
-        element: <Login></Login>
-      },{
+        path: "/login",
+        element: <Login></Login>,
+      },
+      {
         path: "/register",
-        element: <Register></Register>
-      },{
+        element: <Register></Register>,
+      },
+      {
         path: "/all_packages",
-        element: <AllPackages></AllPackages>
-      },{
+
+        element: <AllPackages></AllPackages>,
+      },
+      {
         path: "/package_details/:_id",
         element: <PackageDetails></PackageDetails>,
-        loader: ({params})=>fetch(`http://localhost:3000/api/get_package/${params._id}`)
-        
-      },{
+        loader: ({ params }) =>
+          fetch(`http://localhost:3000/api/get_package/${params._id}`),
+      },
+      {
         path: "/add_package",
-        element: <AddPackage></AddPackage>
-      },{
+        element: (
+          <PrivateRoute>
+            <MyBooking></MyBooking>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/my_packages",
-        element:<ManageMyPackages></ManageMyPackages>
-      },{
+        element: (
+          <PrivateRoute>
+            <PrivateRoute></PrivateRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "/about_us",
-        element: <AboutUs></AboutUs>
-      },{
+        element: <AboutUs></AboutUs>,
+      },
+      {
         path: "/my_bookings",
-        element:<MyBooking></MyBooking>
-      }
-    ]
+        element: (
+          <PrivateRoute>
+            <PrivateRoute></PrivateRoute>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "*",
+        element: <Page404></Page404>,
+      },
+    ],
   },
 ]);

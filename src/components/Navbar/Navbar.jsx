@@ -13,16 +13,13 @@ import { AuthContext } from "../../Context/AuthContext";
 import { DropLink } from "../DropLink/DropLink";
 import { useNavigate } from "react-router";
 
-
-
-
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
- const navigate = useNavigate();
-  const {user} = use(AuthContext);
-
+  const navigate = useNavigate();
+  const { user, LogoutUser } = use(AuthContext);
+  console.log(user);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -31,7 +28,8 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
-    alert("Logged out!");
+    LogoutUser();
+    navigate("/login");
   };
 
   return (
@@ -66,7 +64,7 @@ export default function Navbar() {
             <NavLink to="/" className="hover:underline">
               Home
             </NavLink>
-            <NavLink to="/all_packages"className="hover:underline">
+            <NavLink to="/all_packages" className="hover:underline">
               All Packages
             </NavLink>
             {user && (
@@ -95,7 +93,7 @@ export default function Navbar() {
                   className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/20 ring-1 ring-white/30 text-white hover:bg-white/30 transition"
                 >
                   <img
-                    src="https://i.pravatar.cc/40"
+                    src={user.photoURL}
                     alt="Profile"
                     className="w-8 h-8 rounded-full border-2 border-white"
                   />
@@ -107,8 +105,6 @@ export default function Navbar() {
                 </button>
                 {profileOpen && (
                   <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/80  ring-white/15  ring-1  backdrop-blur-lg shadow-lg text-white p-2">
-
-                  
                     <DropLink
                       title="Add Package"
                       icon={PlusCircle}
@@ -173,18 +169,30 @@ export default function Navbar() {
 
             {/* Links */}
             <div className="mt-6 space-y-4 text-white/95">
-              <NavLink to="/" className="block py-2 px-3 rounded-xl bg-white/10">
+              <NavLink
+                to="/"
+                className="block py-2 px-3 rounded-xl bg-white/10"
+              >
                 Home
               </NavLink>
-              <NavLink to="/all_packages" className="block py-2 px-3 rounded-xl bg-white/10">
+              <NavLink
+                to="/all_packages"
+                className="block py-2 px-3 rounded-xl bg-white/10"
+              >
                 All Packages
               </NavLink>
               {user && (
-                <NavLink to="/my_bookings"className="block py-2 px-3 rounded-xl bg-white/10">
+                <NavLink
+                  to="/my_bookings"
+                  className="block py-2 px-3 rounded-xl bg-white/10"
+                >
                   My Bookings
                 </NavLink>
               )}
-              <NavLink to={"/about_us"} className="block py-2 px-3 rounded-xl bg-white/10">
+              <NavLink
+                to={"/about_us"}
+                className="block py-2 px-3 rounded-xl bg-white/10"
+              >
                 About Us
               </NavLink>
             </div>
