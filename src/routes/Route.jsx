@@ -5,6 +5,8 @@ import Login from "../page/Login/Login";
 import Register from "../page/Register/Register";
 import AllPackages from "../page/AllPackage/AllPackages";
 import PackageDetails from "../page/PackageDetails/PackageDetails";
+import AddPackage from "../page/AddPackage/AddPackage";
+import ManageMyPackages from "../page/ManageMyPackages/ManageMyPackages";
 
 
 export const router = createBrowserRouter([
@@ -31,6 +33,12 @@ export const router = createBrowserRouter([
         element: <PackageDetails></PackageDetails>,
         loader: ({params})=>fetch(`http://localhost:3000/api/get_package/${params._id}`)
         
+      },{
+        path: "/add_package",
+        element: <AddPackage></AddPackage>
+      },{
+        path: "/my_packages",
+        element:<ManageMyPackages></ManageMyPackages>
       }
     ]
   },

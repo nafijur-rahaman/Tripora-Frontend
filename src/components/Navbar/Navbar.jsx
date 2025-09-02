@@ -8,10 +8,10 @@ import {
   PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import { DropLink } from "../DropLink/DropLink";
-
+import { useNavigate } from "react-router";
 
 
 
@@ -20,7 +20,7 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-
+ const navigate = useNavigate();
   const {user} = use(AuthContext);
 
 
@@ -43,7 +43,7 @@ export default function Navbar() {
           className={`relative flex items-center justify-between gap-3 rounded-3xl px-4 py-3 transition-all backdrop-blur-lg ${
             scrolled
               ? "bg-slate-900/80 ring-1 ring-white/15 shadow-lg"
-              : "bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600 shadow-xl"
+              : "bg-gradient-to-r bg-[#00AEEF] shadow-xl"
           }`}
         >
           {/* Logo */}
@@ -112,12 +112,12 @@ export default function Navbar() {
                     <DropLink
                       title="Add Package"
                       icon={PlusCircle}
-                      onClick={() => alert("Add Package clicked")}
+                      onClick={() => navigate("/add_package")}
                     />
                     <DropLink
                       title="Manage My Packages"
                       icon={LayoutDashboard}
-                      onClick={() => alert("Manage My Packages clicked")}
+                      onClick={() => navigate("/my_packages")}
                     />
                     <DropLink
                       title="Logout"
@@ -200,12 +200,12 @@ export default function Navbar() {
                 </NavLink>
               ) : (
                 <>
-                  <a
-                    href="#"
+                  <NavLink
+                    to={"/add_package"}
                     className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
                   >
                     Add Package
-                  </a>
+                  </NavLink>
                   <a
                     href="#"
                     className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
