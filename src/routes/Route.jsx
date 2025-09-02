@@ -7,6 +7,7 @@ import AllPackages from "../page/AllPackage/AllPackages";
 import PackageDetails from "../page/PackageDetails/PackageDetails";
 import AddPackage from "../page/AddPackage/AddPackage";
 import ManageMyPackages from "../page/ManageMyPackages/ManageMyPackages";
+import AboutUs from "../page/AboutUs/AboutUs";
 
 
 export const router = createBrowserRouter([
@@ -39,6 +40,9 @@ export const router = createBrowserRouter([
       },{
         path: "/my_packages",
         element:<ManageMyPackages></ManageMyPackages>
+      },{
+        path: "/about_us",
+        element: <AboutUs></AboutUs>
       }
     ]
   },

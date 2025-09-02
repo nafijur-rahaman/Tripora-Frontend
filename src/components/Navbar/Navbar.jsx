@@ -74,9 +74,9 @@ export default function Navbar() {
                 My Bookings
               </a>
             )}
-            <a href="#" className="hover:underline">
+            <NavLink to="/about_us" className="hover:underline">
               About Us
-            </a>
+            </NavLink>
           </div>
 
           {/* Desktop Auth Section */}
@@ -184,9 +184,9 @@ export default function Navbar() {
                   My Bookings
                 </a>
               )}
-              <a href="#" className="block py-2 px-3 rounded-xl bg-white/10">
+              <NavLink to={"/about_us"} className="block py-2 px-3 rounded-xl bg-white/10">
                 About Us
-              </a>
+              </NavLink>
             </div>
 
             {/* Auth Buttons */}
