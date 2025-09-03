@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { motion } from "framer-motion";
+import { ThemeContext } from '../../Context/ThemeContext';
 
 const images = [
   "/images/hotel-resto-2.jpg",
@@ -12,12 +13,18 @@ const images = [
   "/images/image_2.jpg",
 ];
 
-export default function AnimatedCollage() {
+
+
+export default function TourShowcase() {
+   const { theme } = useContext(ThemeContext);
+   const sectionBg = theme === 'dark' ? 'bg-gray-900' : 'bg-gray-50';
+   const headingText = theme === 'dark' ? 'text-gray-50' : 'text-gray-800';
   return (
 
 <div>
-<h2 className="text-4xl font-extrabold text-center text-gray-800 mb-4">Memories of a lifetime</h2>
-        <div className="relative w-full min-h-screen flex justify-center items-center bg-gray-50 overflow-hidden">
+<h2 className={`text-4xl font-extrabold ${sectionBg} ${headingText} text-center py-20`}>Memories of a lifetime</h2>
+       <div className={`relative w-full min-h-screen flex justify-center items-center ${sectionBg} overflow-hidden`}>
+
 
     
 

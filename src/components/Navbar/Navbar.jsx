@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Plane,
   Menu,
@@ -8,18 +8,17 @@ import {
   PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import { DropLink } from "../DropLink/DropLink";
-import { useNavigate } from "react-router";
+import ThemeSwitcher from "../Switcher/ThemeSwitcher";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
-  const { user, LogoutUser } = use(AuthContext);
-  console.log(user);
+  const { user, LogoutUser } = useContext(AuthContext);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -36,13 +35,12 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-sky-500 via-teal-400 to-emerald-500 opacity-90" />
-
       <nav className={`mx-auto max-w-7xl px-3 ${scrolled ? "mt-2" : "mt-3"}`}>
         <div
           className={`relative flex items-center justify-between gap-3 rounded-3xl px-4 py-3 transition-all backdrop-blur-lg ${
             scrolled
               ? "bg-slate-900/80 ring-1 ring-white/15 shadow-lg"
-              : "bg-gradient-to-r bg-[#00AEEF] shadow-xl"
+              : "bg-gradient-to-r from-[#00AEEF] to-[#00EEF5] shadow-xl"
           }`}
         >
           {/* Logo */}
@@ -80,6 +78,7 @@ export default function Navbar() {
 
           {/* Desktop Auth Section */}
           <div className="hidden md:flex items-center gap-2">
+            <ThemeSwitcher />
             {!user ? (
               <NavLink
                 to="/login"
@@ -105,7 +104,7 @@ export default function Navbar() {
                   />
                 </button>
                 {profileOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/80  ring-white/15  ring-1  backdrop-blur-lg shadow-lg text-white p-2">
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/80 ring-white/15 ring-1 backdrop-blur-lg shadow-lg text-white p-2">
                     <DropLink
                       title="Add Package"
                       icon={PlusCircle}
@@ -170,10 +169,7 @@ export default function Navbar() {
 
             {/* Links */}
             <div className="mt-6 space-y-4 text-white/95">
-              <NavLink
-                to="/"
-                className="block py-2 px-3 rounded-xl bg-white/10"
-              >
+              <NavLink to="/" className="block py-2 px-3 rounded-xl bg-white/10">
                 Home
               </NavLink>
               <NavLink
@@ -215,12 +211,12 @@ export default function Navbar() {
                   >
                     Add Package
                   </NavLink>
-                  <a
-                    href="#"
+                  <NavLink
+                    to={"/my_packages"}
                     className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
                   >
                     Manage My Packages
-                  </a>
+                  </NavLink>
                   <button
                     onClick={handleLogout}
                     className="w-full text-center py-2 rounded-xl ring-1 ring-white/40 text-white text-base"

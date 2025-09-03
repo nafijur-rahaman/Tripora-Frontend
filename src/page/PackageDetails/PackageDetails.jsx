@@ -3,18 +3,20 @@ import { motion } from "framer-motion";
 import { useLoaderData } from "react-router";
 import axios from "axios";
 import { AuthContext } from "../../Context/AuthContext";
+import SweetAlert from "sweetalert2";
 
 export default function PackageDetails() {
   const packageData = useLoaderData();
   const packageDetails = packageData.data;
-  const { user } = use(AuthContext); 
+  console.log(packageDetails);
+  const { user } = use(AuthContext);
 
   const [showModal, setShowModal] = useState(false);
   const [specialNote, setSpecialNote] = useState("");
 
   const token = localStorage.getItem("token");
 
-  const handleBooking = async() => {
+  const handleBooking = async () => {
     const bookingData = {
       tour_name: packageDetails.tour_name,
       price: packageDetails.price,
@@ -26,30 +28,45 @@ export default function PackageDetails() {
       status: "pending",
     };
 
-    console.log("Booking Data:", bookingData);
-      try {
-const response = await axios.post(
-  "http://localhost:3000/api/book_package/",
-  {
-    package_id: packageDetails._id,
-    ...bookingData,
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-);
+    // console.log("Booking Data:", bookingData);
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/book_package/",
+        {
+          package_id: packageDetails._id,
+          ...bookingData,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
+      // console.log("Booking successful:", response.data);
 
-    console.log("Booking successful:", response.data);
-  } catch (error) {
-    if (error.response) {
-      console.error("Booking failed:", error.response.data.message);
-    } else {
-      console.error("Error booking package:", error.message);
+      SweetAlert.fire({
+        icon: "success",
+        title: "Booking successful",
+        text: "Your package has been booked successfully.",
+      });
+    } catch (error) {
+      if (error.response) {
+        SweetAlert.fire({
+          icon: "error",
+          title: "Booking failed",
+          text: error.response.data.message,
+        });
+        // console.error("Booking failed:", error.response.data.message);
+      } else {
+        SweetAlert.fire({
+          icon: "error",
+          title: "Booking failed",
+          text: error.message,
+        });
+        // console.error("Error booking package:", error.message);
+      }
     }
-  }
 
     setShowModal(false);
     setSpecialNote("");
@@ -111,7 +128,7 @@ const response = await axios.post(
 
             <div className="flex flex-wrap gap-2">
               <span className="px-3 py-1 text-xs bg-sky-100 text-sky-700 rounded-full">
-                {packageDetails.duration}
+               Duration: {packageDetails.duration}
               </span>
               <span className="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full">
                 Departure: {packageDetails.departure_date}
@@ -121,6 +138,9 @@ const response = await axios.post(
               </span>
               <span className="px-3 py-1 text-xs bg-pink-100 text-pink-700 rounded-full">
                 Destination: {packageDetails.destination}
+              </span>
+              <span className="px-3 py-1 text-xs bg-teal-100 text-teal-700 rounded-full">
+                Bookings: {packageDetails.bookingCount}
               </span>
             </div>
 

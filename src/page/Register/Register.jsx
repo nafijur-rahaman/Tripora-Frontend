@@ -2,10 +2,13 @@ import React, { useState, useContext } from "react";
 import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
+import { useNavigate } from "react-router";
 
 export default function Register() {
   const { RegisterUser, updateUserProfile, loginWithGoogle } =
     useContext(AuthContext);
+
+  const navigate = useNavigate();
 
   const [error, setError] = useState({});
   const [formData, setFormData] = useState({
@@ -55,10 +58,7 @@ export default function Register() {
 
     setLoading(true);
     try {
-      const result   = await RegisterUser(
-        formData.email,
-        formData.password
-      );
+      const result = await RegisterUser(formData.email, formData.password);
       await updateUserProfile(formData.fullName, formData.photo);
 
       Swal.fire({
@@ -76,6 +76,8 @@ export default function Register() {
         password: "",
         confirmPassword: "",
       });
+
+      navigate("/");
     } catch (err) {
       Swal.fire({
         icon: "error",
@@ -92,6 +94,8 @@ export default function Register() {
     setGoogleLoading(true);
     try {
       const result = await loginWithGoogle();
+      updateUserProfile(result.user.displayName, result.user.photoURL);
+
       Swal.fire({
         icon: "success",
         title: "Welcome!",
@@ -99,6 +103,7 @@ export default function Register() {
         timer: 2000,
         showConfirmButton: false,
       });
+      navigate("/");
     } catch (err) {
       Swal.fire({
         icon: "error",

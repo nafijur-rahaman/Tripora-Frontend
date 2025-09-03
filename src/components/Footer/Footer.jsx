@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { motion } from "framer-motion";
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { ThemeContext } from "../../Context/ThemeContext";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -15,9 +17,14 @@ const Footer = () => {
     }
   };
 
+  // Dark/light mode classes
+  const bgColor = theme === "dark" ? "bg-gray-900" : "bg-[#00AEEF]";
+  const textColor = theme === "dark" ? "text-gray-100" : "text-white";
+  const borderColor = theme === "dark" ? "border-gray-700" : "border-white/30";
+  const inputBg = theme === "dark" ? "bg-gray-200 text-black" : "bg-white text-black";
+
   return (
-    <footer className=" bg-[#00AEEF]
- text-white py-12 relative">
+    <footer className={`${bgColor} ${textColor} py-12 relative`}>
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* Company Info */}
         <motion.div 
@@ -90,7 +97,7 @@ const Footer = () => {
               placeholder="Your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 px-3 py-2 rounded-l-lg text-black focus:outline-none"
+              className={`flex-1 px-3 py-2 rounded-l-lg focus:outline-none ${inputBg}`}
               required
             />
             <button
@@ -125,7 +132,7 @@ const Footer = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="text-center text-sm mt-8 border-t border-white/30 pt-4"
+        className={`text-center text-sm mt-8 border-t ${borderColor} pt-4`}
       >
         © {new Date().getFullYear()} TriPora. All rights reserved.
       </motion.div>

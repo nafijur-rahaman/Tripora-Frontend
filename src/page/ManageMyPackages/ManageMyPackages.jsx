@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { motion, AnimatePresence } from "framer-motion";
 import { AuthContext } from "../../Context/AuthContext";
+import SweetAlert from "sweetalert2";
+
 
 const categories = ["All", "Beach", "Mountain", "Adventure", "City"];
 
@@ -59,6 +61,8 @@ useEffect(() => {
         },
       });
       setPackages((prev) => prev.filter((pkg) => pkg._id !== id));
+
+
     } catch (err) {
       console.error(err);
       setError("Failed to delete the package.");
@@ -84,6 +88,10 @@ useEffect(() => {
         )
       );
       setEditingPackage(null);
+      SweetAlert.fire({
+        icon: "success",
+        title: "Package updated successfully",
+      })
     } catch (err) {
       console.error(err);
       setError("Failed to update the package.");

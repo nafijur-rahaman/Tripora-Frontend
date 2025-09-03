@@ -5,7 +5,8 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
 
 export default function Login() {
-  const { LoginUser, loginWithGoogle } = useContext(AuthContext);
+  const { LoginUser, loginWithGoogle, updateUserProfile } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -64,6 +65,8 @@ export default function Login() {
     setGoogleLoading(true);
     try {
       const result = await loginWithGoogle();
+      updateUserProfile(result.user.displayName, result.user.photoURL);
+
       Swal.fire({
         icon: "success",
         title: "Welcome!",

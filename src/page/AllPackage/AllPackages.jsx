@@ -19,15 +19,9 @@ export default function AllPackages() {
   // Fetch packages
   useEffect(() => {
     const fetchPackages = async () => {
-      if (!token) return;
       try {
         const res = await axios.get(
-          "http://localhost:3000/api/get_all_packages/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          "http://localhost:3000/api/get_all_packages/"
         );
         setPackages(Array.isArray(res.data.data) ? res.data.data : []);
       } catch (err) {
@@ -46,14 +40,9 @@ export default function AllPackages() {
   // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
-      if (!token) return;
       // console.log(token);
       try {
-        const res = await axios.get("http://localhost:3000/api/categories", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get("http://localhost:3000/api/categories");
         setCategories(res.data.map((cat) => cat.name));
       } catch (err) {
         console.error(err);

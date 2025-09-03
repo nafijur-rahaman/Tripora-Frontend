@@ -1,6 +1,8 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../Context/AuthContext";
+import SweetAlert from "sweetalert2";
+
 
 export default function AddPackage() {
   const [packageData, setPackageData] = useState({
@@ -59,6 +61,14 @@ export default function AddPackage() {
 
       if (res.data.success) {
         setSuccess("Package created successfully!");
+
+        SweetAlert.fire({
+          icon: "success",
+          title: "Package created successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         setPackageData({
           tour_name: "",
           image: "",
@@ -73,7 +83,12 @@ export default function AddPackage() {
         });
       }
     } catch (err) {
-      console.error(err);
+      // console.error(err);
+      SweetAlert.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to create package. Please try again.",
+      })
       setError("Failed to create package. Please try again.");
     } finally {
       setLoading(false);

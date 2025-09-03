@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { use } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import SweetAlert from "sweetalert2";
 
 export default function MyBooking() {
   const [bookings, setBookings] = useState([]);
@@ -12,59 +13,63 @@ export default function MyBooking() {
   const userEmail = user?.email;
   const token = localStorage.getItem("token");
 
+  // Fetch user's bookings
+  useEffect(() => {
+    const fetchBookings = async () => {
+      if (!token) return;
+      try {
+        setLoading(true);
+        const res = await axios.get(
+          `http://localhost:3000/api/get_all_bookings?userEmail=${userEmail}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setBookings(res.data.data || []);
+        console.log(res.data.data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch bookings.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    fetchBookings();
+  }, [userEmail, token]);
 
-
-// Fetch user's bookings
-useEffect(() => {
-  const fetchBookings = async () => {
-    if (!token) return;
+  // Mark booking as completed
+  const handleComplete = async (bookingId) => {
     try {
-      setLoading(true);
-      const res = await axios.get(
-        `http://localhost:3000/api/get_all_bookings?userEmail=${userEmail}`,
+      await axios.put(
+        `http://localhost:3000/api/update_booking/${bookingId}`,
+        {}, 
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setBookings(res.data.data || []);
-      console.log(res.data.data);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch bookings.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchBookings();
-}, [userEmail, token]);
-
-
-
-  // Mark booking as completed
-  const handleComplete = async (bookingId) => {
-    try {
-      await axios.put(`http://localhost:3000/api/update_booking/${bookingId}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
       setBookings((prev) =>
         prev.map((b) =>
           b._id === bookingId ? { ...b, status: "completed" } : b
         )
       );
+      SweetAlert.fire({
+        icon: "success",
+        title: "Booking completed successfully",
+      });
     } catch (error) {
-      console.error("Failed to complete booking:", error);
-      alert("Failed to update booking status.");
+      // console.error("Failed to complete booking:", error);
+      // alert("Failed to update booking status.");
+      SweetAlert.fire({
+        icon: "error",
+        title: "Failed to complete booking",
+      });
     }
   };
-
-
-
 
   // Cancel booking and decrement package booking count
   const handleCancel = async (bookingId, packageId) => {
@@ -73,7 +78,7 @@ useEffect(() => {
         data: { booking_id: bookingId, package_id: packageId },
         headers: {
           Authorization: `Bearer ${token}`,
-        }
+        },
       });
       setBookings((prev) => prev.filter((b) => b._id !== bookingId));
     } catch (error) {
@@ -81,9 +86,6 @@ useEffect(() => {
       alert("Failed to cancel booking.");
     }
   };
-
-
-
 
   return (
     <section className="py-30 bg-gray-50" id="manage-booking">

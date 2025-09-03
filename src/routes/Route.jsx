@@ -11,6 +11,7 @@ import AboutUs from "../page/AboutUs/AboutUs";
 import MyBooking from "../page/MyBooking/MyBooking";
 import Page404 from "../page/Page404/Page404";
 import PrivateRoute from "../Context/PrivateRoute";
+import Loading from "../components/Loader/Loader";
 
 export const router = createBrowserRouter([
   {
@@ -37,7 +38,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/package_details/:_id",
-        element: <PackageDetails />,
+        element: (
+          <PrivateRoute>
+           <PackageDetails></PackageDetails>
+          </PrivateRoute>
+        ),
         loader: async ({ params }) => {
           const token = localStorage.getItem("token");
 
@@ -47,7 +52,9 @@ export const router = createBrowserRouter([
             },
           });
         },
+        hydrateFallbackElement:<Loading></Loading>
       },
+      
 
       {
         path: "/add_package",
