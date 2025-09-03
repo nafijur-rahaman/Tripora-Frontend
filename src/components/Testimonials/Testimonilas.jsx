@@ -5,28 +5,8 @@ import { FaStar } from 'react-icons/fa';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { ThemeContext } from '../../Context/ThemeContext';
+import { testimonials } from './testimonial';
 
-const testimonials = [
-  {
-    name: 'Emily Johnson',
-    image: '/images/person_1.jpg',
-    rating: 5,
-    review: 'TravelX made our trip unforgettable! The guides were amazing and every detail was perfect.',
-  },
-  {
-    name: 'David Smith',
-    image: '/images/person_2.jpg',
-    rating: 4,
-    review: 'A wonderful experience with excellent customer service. Highly recommended!',
-  },
-  {
-    name: 'Adam Lee',
-    image: '/images/person_4.jpg',
-    rating: 5,
-    review: 'The best travel experience I have ever had. Professional and friendly guides!',
-  },
-  // Add more testimonials as needed
-];
 
 export default function TestimonialsCarousel() {
   const { theme } = useContext(ThemeContext);

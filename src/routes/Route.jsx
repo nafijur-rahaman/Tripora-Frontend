@@ -16,6 +16,7 @@ import Loading from "../components/Loader/Loader";
 export const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <Page404></Page404>,
     element: <MainLayout></MainLayout>,
     children: [
       {

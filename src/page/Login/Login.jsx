@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { motion } from "framer-motion";
-import { NavLink, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
 
@@ -8,6 +8,7 @@ export default function Login() {
   const { LoginUser, loginWithGoogle, updateUserProfile } =
     useContext(AuthContext);
   const navigate = useNavigate();
+	const path = useLocation()
 
   const [formData, setFormData] = useState({
     email: "",
@@ -47,7 +48,7 @@ export default function Login() {
         timer: 2000,
         showConfirmButton: false,
       });
-      navigate("/");
+      navigate(path.state||"/")
     } catch (err) {
       setError(err.message);
       Swal.fire({
@@ -74,7 +75,7 @@ export default function Login() {
         timer: 2000,
         showConfirmButton: false,
       });
-      navigate("/dashboard");
+      navigate(path.state||"/")
     } catch (err) {
       Swal.fire({
         icon: "error",
