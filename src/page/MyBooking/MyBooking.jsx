@@ -20,7 +20,7 @@ export default function MyBooking() {
       try {
         setLoading(true);
         const res = await axios.get(
-          `http://localhost:3000/api/get_all_bookings?userEmail=${userEmail}`,
+          `https://tripora-server.vercel.app/api/get_all_bookings?userEmail=${userEmail}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -28,9 +28,9 @@ export default function MyBooking() {
           }
         );
         setBookings(res.data.data || []);
-        console.log(res.data.data);
+        // console.log(res.data.data);
       } catch (err) {
-        console.error(err);
+        // console.error(err);
         setError("Failed to fetch bookings.");
       } finally {
         setLoading(false);
@@ -44,8 +44,8 @@ export default function MyBooking() {
   const handleComplete = async (bookingId) => {
     try {
       await axios.put(
-        `http://localhost:3000/api/update_booking/${bookingId}`,
-        {}, 
+        `https://tripora-server.vercel.app/api/update_booking/${bookingId}`,
+        {},
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -74,12 +74,15 @@ export default function MyBooking() {
   // Cancel booking and decrement package booking count
   const handleCancel = async (bookingId, packageId) => {
     try {
-      await axios.delete("http://localhost:3000/api/delete_booking/", {
-        data: { booking_id: bookingId, package_id: packageId },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        "https://tripora-server.vercel.app/api/delete_booking/",
+        {
+          data: { booking_id: bookingId, package_id: packageId },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setBookings((prev) => prev.filter((b) => b._id !== bookingId));
     } catch (error) {
       console.error("Failed to cancel booking:", error);

@@ -41,21 +41,23 @@ export const router = createBrowserRouter([
         path: "/package_details/:_id",
         element: (
           <PrivateRoute>
-           <PackageDetails></PackageDetails>
+            <PackageDetails></PackageDetails>
           </PrivateRoute>
         ),
         loader: async ({ params }) => {
           const token = localStorage.getItem("token");
 
-          return fetch(`http://localhost:3000/api/get_package/${params._id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          return fetch(
+            `https://tripora-server.vercel.app/api/get_package/${params._id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
         },
-        hydrateFallbackElement:<Loading></Loading>
+        hydrateFallbackElement: <Loading></Loading>,
       },
-      
 
       {
         path: "/add_package",

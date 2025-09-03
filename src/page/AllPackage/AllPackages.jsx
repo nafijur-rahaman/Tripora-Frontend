@@ -21,12 +21,12 @@ export default function AllPackages() {
     const fetchPackages = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3000/api/get_all_packages/"
+          "https://tripora-server.vercel.app/api/get_all_packages/"
         );
         setPackages(Array.isArray(res.data.data) ? res.data.data : []);
       } catch (err) {
         setError("Failed to load packages.");
-        console.error(err);
+        // console.error(err);
       } finally {
         setLoading(false);
       }
@@ -42,10 +42,10 @@ export default function AllPackages() {
     const fetchCategories = async () => {
       // console.log(token);
       try {
-        const res = await axios.get("http://localhost:3000/api/categories");
+        const res = await axios.get("https://tripora-server.vercel.app/api/categories");
         setCategories(res.data.map((cat) => cat.name));
       } catch (err) {
-        console.error(err);
+        // console.error(err);
       }
     };
     fetchCategories();

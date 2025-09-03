@@ -47,10 +47,10 @@ export default function AddPackage() {
         guide_photo,
       };
 
-      console.log(payload);
+      // console.log(payload);
 
       const res = await axios.post(
-        "http://localhost:3000/api/create_package/",
+        "https://tripora-server.vercel.app/api/create_package/",
         payload,
         {
           headers: {

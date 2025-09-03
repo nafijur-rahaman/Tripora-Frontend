@@ -13,7 +13,7 @@ export default function JourneySection() {
     const fetchPackages = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/get_limited_packages/',
+          'https://tripora-server.vercel.app/api/get_limited_packages/',
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -22,7 +22,7 @@ export default function JourneySection() {
         );
         setPackages(response.data.data);
       } catch (error) {
-        console.error('Error fetching packages:', error);
+        // console.error('Error fetching packages:', error);
       }
     };
 

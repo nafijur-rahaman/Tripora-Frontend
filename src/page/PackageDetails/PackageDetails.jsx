@@ -8,7 +8,7 @@ import SweetAlert from "sweetalert2";
 export default function PackageDetails() {
   const packageData = useLoaderData();
   const packageDetails = packageData.data;
-  console.log(packageDetails);
+  // console.log(packageDetails);
   const { user } = use(AuthContext);
 
   const [showModal, setShowModal] = useState(false);
@@ -31,7 +31,7 @@ export default function PackageDetails() {
     // console.log("Booking Data:", bookingData);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/book_package/",
+        "https://tripora-server.vercel.app/api/book_package/",
         {
           package_id: packageDetails._id,
           ...bookingData,
@@ -128,7 +128,7 @@ export default function PackageDetails() {
 
             <div className="flex flex-wrap gap-2">
               <span className="px-3 py-1 text-xs bg-sky-100 text-sky-700 rounded-full">
-               Duration: {packageDetails.duration}
+                Duration: {packageDetails.duration}
               </span>
               <span className="px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full">
                 Departure: {packageDetails.departure_date}
