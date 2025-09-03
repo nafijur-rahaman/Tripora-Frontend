@@ -11,36 +11,47 @@ export default function MyBooking() {
   const { user } = use(AuthContext);
   const userEmail = user?.email;
   const token = localStorage.getItem("token");
-  // console.log(userEmail);
 
-  // Fetch user's bookings
-  useEffect(() => {
-    const fetchBookings = async () => {
-      if (!token) return;
-      try {
-        setLoading(true);
-        const res = await axios.get(`http://localhost:3000/api/get_all_bookings?userEmail=${encodeURIComponent(userEmail)}`,{
+
+
+
+// Fetch user's bookings
+useEffect(() => {
+  const fetchBookings = async () => {
+    if (!token) return;
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `http://localhost:3000/api/get_all_bookings?userEmail=${userEmail}`,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-        setBookings(res.data.data || []);
-        console.log(res.data.data);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to fetch bookings.");
-      } finally {
-        setLoading(false);
-      }
-    };
+        }
+      );
+      setBookings(res.data.data || []);
+      console.log(res.data.data);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch bookings.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchBookings();
-  }, [userEmail]);
+  fetchBookings();
+}, [userEmail, token]);
+
+
 
   // Mark booking as completed
   const handleComplete = async (bookingId) => {
     try {
-      await axios.put(`http://localhost:3000/api/update_booking/${bookingId}`);
+      await axios.put(`http://localhost:3000/api/update_booking/${bookingId}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setBookings((prev) =>
         prev.map((b) =>
           b._id === bookingId ? { ...b, status: "completed" } : b
@@ -52,11 +63,17 @@ export default function MyBooking() {
     }
   };
 
+
+
+
   // Cancel booking and decrement package booking count
   const handleCancel = async (bookingId, packageId) => {
     try {
       await axios.delete("http://localhost:3000/api/delete_booking/", {
         data: { booking_id: bookingId, package_id: packageId },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
       });
       setBookings((prev) => prev.filter((b) => b._id !== bookingId));
     } catch (error) {
@@ -64,6 +81,9 @@ export default function MyBooking() {
       alert("Failed to cancel booking.");
     }
   };
+
+
+
 
   return (
     <section className="py-30 bg-gray-50" id="manage-booking">

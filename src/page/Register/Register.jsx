@@ -59,10 +59,6 @@ export default function Register() {
         formData.email,
         formData.password
       );
-
-      const token = await result.user.getIdToken();
-      localStorage.setItem("token", token);
-
       await updateUserProfile(formData.fullName, formData.photo);
 
       Swal.fire({
@@ -96,8 +92,6 @@ export default function Register() {
     setGoogleLoading(true);
     try {
       const result = await loginWithGoogle();
-      const token = await result.user.getIdToken();
-      localStorage.setItem("token", token);
       Swal.fire({
         icon: "success",
         title: "Welcome!",

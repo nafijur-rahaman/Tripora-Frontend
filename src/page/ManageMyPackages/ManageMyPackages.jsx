@@ -6,6 +6,7 @@ import { AuthContext } from "../../Context/AuthContext";
 const categories = ["All", "Beach", "Mountain", "Adventure", "City"];
 
 export default function ManageMyPackages() {
+
   const { user } = useContext(AuthContext);
   const userEmail = user?.email;
 
@@ -17,32 +18,46 @@ export default function ManageMyPackages() {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingPackage, setEditingPackage] = useState(null);
 
-  // ✅ Fetch user's packages
-  useEffect(() => {
-    if (!userEmail) return;
+  const token = localStorage.getItem("token");
 
-    const fetchUserPackages = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get(
-          `http://localhost:3000/api/get_user_packages?userEmail=${encodeURIComponent(userEmail)}`
-        );
-        setPackages(res.data.data || []);
-      } catch (err) {
-        console.error(err);
-        setError("Failed to fetch your packages.");
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    fetchUserPackages();
-  }, [userEmail]);
+useEffect(() => {
+  if (!userEmail) return;
+
+  const fetchUserPackages = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get(
+        `http://localhost:3000/api/get_user_packages/?userEmail=${userEmail}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setPackages(res.data.data || []);
+
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch your packages.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchUserPackages();
+}, [userEmail, token]);
+
+
+
 
   //  Delete a package
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/delete_package/${id}`);
+      await axios.delete(`http://localhost:3000/api/delete_package/${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setPackages((prev) => prev.filter((pkg) => pkg._id !== id));
     } catch (err) {
       console.error(err);
@@ -50,12 +65,18 @@ export default function ManageMyPackages() {
     }
   };
 
+
+
   //  Update a package
   const handleSave = async (updatedPackage) => {
     try {
       await axios.put(
         `http://localhost:3000/api/update_package/${updatedPackage._id}`,
-        updatedPackage
+        updatedPackage,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setPackages((prev) =>
         prev.map((pkg) =>
@@ -69,12 +90,17 @@ export default function ManageMyPackages() {
     }
   };
 
+
+
   //  Filter packages
   const filteredPackages = packages.filter(
     (pkg) =>
       (activeCategory === "All" || pkg.category === activeCategory) &&
       pkg.tour_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+
+
 
   return (
     <section className="py-30 bg-gradient-to-br from-gray-50 to-gray-100">
@@ -113,7 +139,9 @@ export default function ManageMyPackages() {
         </div>
 
         {/* Loading / Error / No Data */}
-        {loading && <p className="text-center text-gray-500">Loading packages...</p>}
+        {loading && (
+          <p className="text-center text-gray-500">Loading packages...</p>
+        )}
         {error && <p className="text-center text-red-500">{error}</p>}
         {!loading && !error && filteredPackages.length === 0 && (
           <p className="text-center text-gray-500">No packages found.</p>
@@ -200,7 +228,10 @@ export default function ManageMyPackages() {
                   type="text"
                   value={editingPackage.tour_name}
                   onChange={(e) =>
-                    setEditingPackage({ ...editingPackage, tour_name: e.target.value })
+                    setEditingPackage({
+                      ...editingPackage,
+                      tour_name: e.target.value,
+                    })
                   }
                   className="p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-sky-500"
                   placeholder="Tour Name"
@@ -209,7 +240,10 @@ export default function ManageMyPackages() {
                   type="text"
                   value={editingPackage.duration}
                   onChange={(e) =>
-                    setEditingPackage({ ...editingPackage, duration: e.target.value })
+                    setEditingPackage({
+                      ...editingPackage,
+                      duration: e.target.value,
+                    })
                   }
                   className="p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-sky-500"
                   placeholder="Duration"

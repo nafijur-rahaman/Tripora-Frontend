@@ -1,29 +1,31 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import { AuthContext } from '../../Context/AuthContext';
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { AuthContext } from "../../Context/AuthContext";
 
 export default function AddPackage() {
   const [packageData, setPackageData] = useState({
-    tour_name: '',
-    image: '',
-    duration: '',
-    departure_location: '',
-    destination: '',
-    price: '',
-    departure_date: '',
-    package_details: '',
-    guide_contact_no: '',
-    category: '',
+    tour_name: "",
+    image: "",
+    duration: "",
+    departure_location: "",
+    destination: "",
+    price: "",
+    departure_date: "",
+    package_details: "",
+    guide_contact_no: "",
+    category: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const { user } = useContext(AuthContext);
   const guide_name = user?.displayName;
   const guide_email = user?.email;
   const guide_photo = user?.photoURL;
+
+  const token = localStorage.getItem("token");
 
   const handleChange = (e) => {
     setPackageData({ ...packageData, [e.target.name]: e.target.value });
@@ -32,8 +34,8 @@ export default function AddPackage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     try {
       const payload = {
@@ -45,26 +47,34 @@ export default function AddPackage() {
 
       console.log(payload);
 
-      const res = await axios.post('http://localhost:3000/api/create_package/', payload);
+      const res = await axios.post(
+        "http://localhost:3000/api/create_package/",
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (res.data.success) {
-        setSuccess('Package created successfully!');
+        setSuccess("Package created successfully!");
         setPackageData({
-          tour_name: '',
-          image: '',
-          duration: '',
-          departure_location: '',
-          destination: '',
-          price: '',
-          departure_date: '',
-          package_details: '',
-          guide_contact_no: '',
-          category: '',
+          tour_name: "",
+          image: "",
+          duration: "",
+          departure_location: "",
+          destination: "",
+          price: "",
+          departure_date: "",
+          package_details: "",
+          guide_contact_no: "",
+          category: "",
         });
       }
     } catch (err) {
       console.error(err);
-      setError('Failed to create package. Please try again.');
+      setError("Failed to create package. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -201,17 +211,19 @@ export default function AddPackage() {
           type="submit"
           disabled={loading}
           className={`w-full py-3 text-white font-bold rounded-xl transition ${
-            loading ? 'bg-gray-400' : 'bg-[#00AEEF] hover:bg-sky-600'
+            loading ? "bg-gray-400" : "bg-[#00AEEF] hover:bg-sky-600"
           }`}
         >
-          {loading ? 'Submitting...' : 'Add Package'}
+          {loading ? "Submitting..." : "Add Package"}
         </button>
       </form>
 
       {/* Preview Section */}
       {packageData.tour_name && (
         <div className="mt-12 w-full max-w-3xl bg-white rounded-2xl shadow-md p-6">
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">{packageData.tour_name}</h3>
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            {packageData.tour_name}
+          </h3>
           <img
             src={packageData.image}
             alt={packageData.tour_name}
@@ -219,12 +231,22 @@ export default function AddPackage() {
           />
           <p className="text-gray-600 mb-1">Category: {packageData.category}</p>
           <p className="text-gray-600 mb-1">Duration: {packageData.duration}</p>
-          <p className="text-gray-600 mb-1">Departure: {packageData.departure_location}</p>
-          <p className="text-gray-600 mb-1">Destination: {packageData.destination}</p>
-          <p className="text-gray-800 font-bold mb-2">Price: {packageData.price}</p>
-          <p className="text-gray-600 mb-1">Departure Date: {packageData.departure_date}</p>
+          <p className="text-gray-600 mb-1">
+            Departure: {packageData.departure_location}
+          </p>
+          <p className="text-gray-600 mb-1">
+            Destination: {packageData.destination}
+          </p>
+          <p className="text-gray-800 font-bold mb-2">
+            Price: {packageData.price}
+          </p>
+          <p className="text-gray-600 mb-1">
+            Departure Date: {packageData.departure_date}
+          </p>
           <p className="text-gray-700">{packageData.package_details}</p>
-          <p className="text-gray-600 mb-1">Contact: {packageData.guide_contact_no}</p>
+          <p className="text-gray-600 mb-1">
+            Contact: {packageData.guide_contact_no}
+          </p>
           <p className="text-gray-600 mb-1">Guide: {guide_name}</p>
         </div>
       )}

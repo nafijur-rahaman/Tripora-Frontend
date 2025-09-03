@@ -5,12 +5,14 @@ import axios from "axios";
 import { AuthContext } from "../../Context/AuthContext";
 
 export default function PackageDetails() {
-  const packagedata = useLoaderData();
-  const packageDetails = packagedata.data;
-  const { user } = use(AuthContext); // Firebase user data
+  const packageData = useLoaderData();
+  const packageDetails = packageData.data;
+  const { user } = use(AuthContext); 
 
   const [showModal, setShowModal] = useState(false);
   const [specialNote, setSpecialNote] = useState("");
+
+  const token = localStorage.getItem("token");
 
   const handleBooking = async() => {
     const bookingData = {
@@ -26,10 +28,19 @@ export default function PackageDetails() {
 
     console.log("Booking Data:", bookingData);
       try {
-    const response = await axios.post("http://localhost:3000/api/book_package/", {
-      package_id: packageDetails._id,
-      ...bookingData,
-    });
+const response = await axios.post(
+  "http://localhost:3000/api/book_package/",
+  {
+    package_id: packageDetails._id,
+    ...bookingData,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+
 
     console.log("Booking successful:", response.data);
   } catch (error) {

@@ -37,10 +37,18 @@ export const router = createBrowserRouter([
       },
       {
         path: "/package_details/:_id",
-        element: <PackageDetails></PackageDetails>,
-        loader: ({ params }) =>
-          fetch(`http://localhost:3000/api/get_package/${params._id}`),
+        element: <PackageDetails />,
+        loader: async ({ params }) => {
+          const token = localStorage.getItem("token");
+
+          return fetch(`http://localhost:3000/api/get_package/${params._id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+        },
       },
+
       {
         path: "/add_package",
         element: (

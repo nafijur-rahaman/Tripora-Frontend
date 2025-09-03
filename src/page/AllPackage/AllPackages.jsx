@@ -4,23 +4,31 @@ import axios from "axios";
 import { NavLink } from "react-router";
 
 export default function AllPackages() {
+  
   const [packages, setPackages] = useState([]);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const token = localStorage.getItem("token");
+
+
+
 
   // Fetch packages
   useEffect(() => {
     const fetchPackages = async () => {
       if (!token) return;
       try {
-        const res = await axios.get("http://localhost:3000/api/get_all_packages/",{
-          headers: {
-           Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get(
+          "http://localhost:3000/api/get_all_packages/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setPackages(Array.isArray(res.data.data) ? res.data.data : []);
       } catch (err) {
         setError("Failed to load packages.");
@@ -32,19 +40,21 @@ export default function AllPackages() {
     fetchPackages();
   }, [token]);
 
+
+
+
   // Fetch categories
   useEffect(() => {
-    
     const fetchCategories = async () => {
       if (!token) return;
       // console.log(token);
       try {
-        const res = await axios.get("http://localhost:3000/api/categories",{
+        const res = await axios.get("http://localhost:3000/api/categories", {
           headers: {
-           Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        setCategories(res.data.map(cat => cat.name));
+        setCategories(res.data.map((cat) => cat.name));
       } catch (err) {
         console.error(err);
       }
@@ -52,21 +62,38 @@ export default function AllPackages() {
     fetchCategories();
   }, [token]);
 
-  // Filter packages based on selected category
-  const filteredPackages =
-    activeCategory === "All"
-      ? packages
-      : packages.filter(pkg => pkg.category === activeCategory);
+
+
+  //  Filter packages
+const filteredPackages = packages.filter(
+  (pkg) =>
+    (activeCategory === "All" || pkg.category === activeCategory) &&
+    (
+      pkg.tour_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.destination.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+);
 
   return (
     <section className="py-30 bg-gray-50" id="packages">
-
-    
-
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-gray-800">Your Journey Starts Here</h2>
-          <p className="text-lg text-gray-600 mt-2">Featured Packages for Your Next Adventure</p>
+          <h2 className="text-4xl font-extrabold text-gray-800">
+            Your Journey Starts Here
+          </h2>
+          <p className="text-lg text-gray-600 mt-2">
+            Featured Packages for Your Next Adventure
+          </p>
+        </div>
+        {/* Search Bar */}
+        <div className="flex justify-center mb-6">
+          <input
+            type="text"
+            placeholder="Search by package name"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full md:w-1/2 p-3 rounded-xl border border-gray-300 shadow-sm focus:ring-2 focus:ring-sky-500 focus:outline-none transition"
+          />
         </div>
 
         {/* Category Filters */}
@@ -119,7 +146,7 @@ export default function AllPackages() {
                     </div>
                   </motion.div>
                 ))
-              : filteredPackages.map(pkg => (
+              : filteredPackages.map((pkg) => (
                   <motion.div
                     key={pkg._id}
                     layout
@@ -129,16 +156,32 @@ export default function AllPackages() {
                     transition={{ duration: 0.5 }}
                     className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:scale-105 transition-transform"
                   >
-                    <img src={pkg.image} alt={pkg.tour_name} className="w-full h-48 object-cover" />
+                    <img
+                      src={pkg.image}
+                      alt={pkg.tour_name}
+                      className="w-full h-48 object-cover"
+                    />
                     <div className="p-5">
-                      <h3 className="text-xl font-semibold mb-2 text-gray-800">{pkg.tour_name}</h3>
-                      <div className="text-gray-600 text-sm mb-1">Guide: {pkg.guide_name}</div>
-                      <div className="text-gray-600 text-sm mb-1">Duration: {pkg.duration}</div>
-                      <div className="text-gray-600 text-sm mb-1">Departure: {pkg.departure_date}</div>
-                      <div className="text-gray-600 text-sm mb-1">From: {pkg.departure_location}</div>
-                      <div className="text-lg font-bold text-gray-800 mb-4">Price: ${pkg.price}</div>
+                      <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                        {pkg.tour_name}
+                      </h3>
+                      <div className="text-gray-600 text-sm mb-1">
+                        Guide: {pkg.guide_name}
+                      </div>
+                      <div className="text-gray-600 text-sm mb-1">
+                        Duration: {pkg.duration}
+                      </div>
+                      <div className="text-gray-600 text-sm mb-1">
+                        Departure: {pkg.departure_date}
+                      </div>
+                      <div className="text-gray-600 text-sm mb-1">
+                        Destination: {pkg.destination}
+                      </div>
+                      <div className="text-lg font-bold text-gray-800 mb-4">
+                        Price: ${pkg.price}
+                      </div>
                       <NavLink
-                        to= {`/package_details/${pkg._id}`}
+                        to={`/package_details/${pkg._id}`}
                         className="block w-full text-center bg-sky-500 hover:bg-sky-600  text-white py-2 rounded-xl  transition"
                       >
                         View Details

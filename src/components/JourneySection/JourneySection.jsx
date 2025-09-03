@@ -5,11 +5,16 @@ import { Link, NavLink } from 'react-router';
 
 export default function JourneySection() {
   const [packages, setPackages] = useState([]);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchPackages = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/get_limited_packages/');
+        const response = await axios.get('http://localhost:3000/api/get_limited_packages/',{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setPackages(response.data.data); 
         // console.log(response.data.data);
       } catch (error) {
@@ -18,7 +23,7 @@ export default function JourneySection() {
     };
 
     fetchPackages();
-  }, []);
+  }, [token]);
 
 
   return (
