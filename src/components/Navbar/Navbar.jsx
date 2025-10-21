@@ -8,7 +8,7 @@ import {
   PlusCircle,
   LayoutDashboard,
 } from "lucide-react";
-import { Link, NavLink, useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import { DropLink } from "../DropLink/DropLink";
 import ThemeSwitcher from "../Switcher/ThemeSwitcher";
@@ -34,55 +34,47 @@ export default function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-sky-500 via-teal-400 to-emerald-500 opacity-90" />
+      {/* subtle animated gradient strip */}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#0072ff] via-[#00c6ff] to-[#facc15] animate-gradient-x" />
+
       <nav className={`mx-auto max-w-7xl px-3 ${scrolled ? "mt-2" : "mt-3"}`}>
         <div
-          className={`relative flex items-center justify-between gap-3 rounded-3xl px-4 py-3 transition-all backdrop-blur-lg ${
+          className={`relative flex items-center justify-between gap-3 rounded-3xl px-5 py-3 transition-all backdrop-blur-lg ${
             scrolled
-              ? "bg-slate-900/80 ring-1 ring-white/15 shadow-lg"
-              : "bg-gradient-to-r from-[#00AEEF] to-[#00EEF5] shadow-xl"
+              ? "bg-slate-900/80 ring-1 ring-white/10 shadow-lg"
+              : "bg-gradient-to-r from-[#0072ff]/90 to-[#00c6ff]/90 shadow-xl"
           }`}
         >
           {/* Logo */}
           <a href="#" className="flex items-center gap-2">
-            <div className="grid place-items-center w-10 h-10 rounded-2xl bg-white/10 ring-1 ring-white/30">
+            <div className="grid place-items-center w-10 h-10 rounded-2xl bg-white/10 ring-1 ring-white/30 hover:shadow-[0_0_10px_#00c6ff] transition">
               <Plane className="w-5 h-5 text-white" />
             </div>
             <div className="text-white">
               <div className="text-lg font-extrabold tracking-wide leading-none">
                 Tripora
               </div>
-              <div className="text-[10px] uppercase opacity-90">
+              <div className="text-[10px] uppercase opacity-90 tracking-wider">
                 Travel Management
               </div>
             </div>
           </a>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-4 text-white">
-            <NavLink to="/" className="hover:underline">
-              Home
-            </NavLink>
-            <NavLink to="/all_packages" className="hover:underline">
-              All Packages
-            </NavLink>
-            {user && (
-              <NavLink to="/my_bookings" className="hover:underline">
-                My Bookings
-              </NavLink>
-            )}
-            <NavLink to="/about_us" className="hover:underline">
-              About Us
-            </NavLink>
+          <div className="hidden lg:flex items-center gap-6 text-white text-sm font-medium">
+            <NavLink to="/" className="hover:text-amber-300 transition">Home</NavLink>
+            <NavLink to="/all_packages" className="hover:text-amber-300 transition">All Packages</NavLink>
+            {user && <NavLink to="/my_bookings" className="hover:text-amber-300 transition">My Bookings</NavLink>}
+            <NavLink to="/about_us" className="hover:text-amber-300 transition">About Us</NavLink>
           </div>
 
-          {/* Desktop Auth Section */}
+          {/* Desktop Auth */}
           <div className="hidden md:flex items-center gap-2">
             <ThemeSwitcher />
             {!user ? (
               <NavLink
                 to="/login"
-                className="px-4 py-2 rounded-xl bg-white text-slate-900 font-semibold hover:opacity-90 transition text-sm"
+                className="px-4 py-2 rounded-xl bg-white text-slate-900 font-semibold hover:bg-amber-200 transition text-sm"
               >
                 Login
               </NavLink>
@@ -104,7 +96,7 @@ export default function Navbar() {
                   />
                 </button>
                 {profileOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/80 ring-white/15 ring-1 backdrop-blur-lg shadow-lg text-white p-2">
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/90 ring-white/15 ring-1 backdrop-blur-lg shadow-xl text-white p-2">
                     <DropLink
                       title="Add Package"
                       icon={PlusCircle}
@@ -115,18 +107,14 @@ export default function Navbar() {
                       icon={LayoutDashboard}
                       onClick={() => navigate("/my_packages")}
                     />
-                    <DropLink
-                      title="Logout"
-                      icon={LogOut}
-                      onClick={handleLogout}
-                    />
+                    <DropLink title="Logout" icon={LogOut} onClick={handleLogout} />
                   </div>
                 )}
               </div>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle */}
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={() => setMobileOpen(true)}
@@ -138,13 +126,12 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Full-Screen Menu */}
+      {/* Mobile Menu */}
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-sky-500 via-fuchsia-500 to-amber-400" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0072ff] via-[#00c6ff] to-[#facc15]" />
           <div className="absolute inset-0 backdrop-blur-sm" />
           <div className="relative h-full px-4 py-4 flex flex-col">
-            {/* Header */}
             <div className="flex items-center justify-between">
               <a href="#" className="flex items-center gap-2">
                 <div className="grid place-items-center w-10 h-10 rounded-2xl bg-white/10 ring-1 ring-white/30">
@@ -154,9 +141,7 @@ export default function Navbar() {
                   <div className="text-lg font-extrabold tracking-wide leading-none">
                     Tripora
                   </div>
-                  <div className="text-[10px] uppercase opacity-90">
-                    Travel Management
-                  </div>
+                  <div className="text-[10px] uppercase opacity-90">Travel Management</div>
                 </div>
               </a>
               <button
@@ -167,34 +152,13 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Links */}
             <div className="mt-6 space-y-4 text-white/95">
-              <NavLink to="/" className="block py-2 px-3 rounded-xl bg-white/10">
-                Home
-              </NavLink>
-              <NavLink
-                to="/all_packages"
-                className="block py-2 px-3 rounded-xl bg-white/10"
-              >
-                All Packages
-              </NavLink>
-              {user && (
-                <NavLink
-                  to="/my_bookings"
-                  className="block py-2 px-3 rounded-xl bg-white/10"
-                >
-                  My Bookings
-                </NavLink>
-              )}
-              <NavLink
-                to={"/about_us"}
-                className="block py-2 px-3 rounded-xl bg-white/10"
-              >
-                About Us
-              </NavLink>
+              <NavLink to="/" className="block py-2 px-3 rounded-xl bg-white/10">Home</NavLink>
+              <NavLink to="/all_packages" className="block py-2 px-3 rounded-xl bg-white/10">All Packages</NavLink>
+              {user && <NavLink to="/my_bookings" className="block py-2 px-3 rounded-xl bg-white/10">My Bookings</NavLink>}
+              <NavLink to="/about_us" className="block py-2 px-3 rounded-xl bg-white/10">About Us</NavLink>
             </div>
 
-            {/* Auth Buttons */}
             <div className="mt-auto grid gap-3">
               {!user ? (
                 <NavLink
@@ -206,13 +170,13 @@ export default function Navbar() {
               ) : (
                 <>
                   <NavLink
-                    to={"/add_package"}
+                    to="/add_package"
                     className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
                   >
                     Add Package
                   </NavLink>
                   <NavLink
-                    to={"/my_packages"}
+                    to="/my_packages"
                     className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
                   >
                     Manage My Packages

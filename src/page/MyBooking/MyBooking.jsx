@@ -27,6 +27,7 @@ export default function MyBooking() {
             },
           }
         );
+        // console.log(res);
         setBookings(res.data.data || []);
         // console.log(res.data.data);
       } catch (err) {
@@ -36,6 +37,8 @@ export default function MyBooking() {
         setLoading(false);
       }
     };
+
+
 
     fetchBookings();
   }, [userEmail, token]);
