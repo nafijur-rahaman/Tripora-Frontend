@@ -6,6 +6,7 @@ import Testimonials from '../../components/Testimonials/Testimonilas';
 import JourneyTimeline from '../../components/JourneyTimeline/JourneyTimeline';
 import TourShowcase from '../../components/TourShowcase/TourShowcase';
 import PopularDestinations from '../../components/PopularDestinations/PopularDestinations';
+import TravelInspiration from '../../components/TravelInspiration/TravelInspiration';
 
 
 const Home = () => {
@@ -14,7 +15,8 @@ const Home = () => {
          <Hero></Hero>
          <PopularDestinations></PopularDestinations>
          <JourneySection></JourneySection>
-         <JourneyTimeline></JourneyTimeline>
+         <TravelInspiration></TravelInspiration>
+         {/* <JourneyTimeline></JourneyTimeline> */}
          <TourShowcase></TourShowcase>
          <Testimonials></Testimonials>
         </div>

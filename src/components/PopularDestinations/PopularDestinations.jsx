@@ -1,6 +1,6 @@
 
 import React from 'react';
-import Slider from 'react-slick'; component
+import Slider from 'react-slick';
 import { motion } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
