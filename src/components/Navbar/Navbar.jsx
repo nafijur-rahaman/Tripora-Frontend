@@ -35,14 +35,14 @@ export default function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       {/* subtle animated gradient strip */}
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#0072ff] via-[#00c6ff] to-[#facc15] animate-gradient-x" />
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#0072ff] to-[#00c6ff]  animate-gradient-x" />
 
       <nav className={`mx-auto max-w-7xl px-3 ${scrolled ? "mt-2" : "mt-3"}`}>
         <div
           className={`relative flex items-center justify-between gap-3 rounded-3xl px-5 py-3 transition-all backdrop-blur-lg ${
             scrolled
               ? "bg-slate-900/80 ring-1 ring-white/10 shadow-lg"
-              : "bg-gradient-to-r from-[#0072ff]/90 to-[#00c6ff]/90 shadow-xl"
+              : "bg-[#0072ff]/90 shadow-xl"
           }`}
         >
           {/* Logo */}
@@ -61,11 +61,11 @@ export default function Navbar() {
           </a>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-6 text-white text-sm font-medium">
-            <NavLink to="/" className="hover:text-amber-300 transition">Home</NavLink>
-            <NavLink to="/all_packages" className="hover:text-amber-300 transition">All Packages</NavLink>
-            {user && <NavLink to="/my_bookings" className="hover:text-amber-300 transition">My Bookings</NavLink>}
-            <NavLink to="/about_us" className="hover:text-amber-300 transition">About Us</NavLink>
+          <div className="hidden lg:flex items-center gap-6 text-white font-semibold">
+            <NavLink to="/" className="hover:text-[#00c6ff] transition">Home</NavLink>
+            <NavLink to="/all_packages" className="hover:text-[#00c6ff] transition">All Packages</NavLink>
+            {user && <NavLink to="/my_bookings" className="hover:text-[#00c6ff] transition">My Bookings</NavLink>}
+            <NavLink to="/about_us" className="hover:text-[#00c6ff] transition">About Us</NavLink>
           </div>
 
           {/* Desktop Auth */}
@@ -74,7 +74,7 @@ export default function Navbar() {
             {!user ? (
               <NavLink
                 to="/login"
-                className="px-4 py-2 rounded-xl bg-white text-slate-900 font-semibold hover:bg-amber-200 transition text-sm"
+                className="px-4 py-2 rounded-xl bg-white text-slate-900 font-semibold hover:bg-[#00c6ff] hover:text-white transition text-sm"
               >
                 Login
               </NavLink>
