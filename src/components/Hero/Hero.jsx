@@ -1,44 +1,75 @@
-import React from "react";
 
-export default function Hero() {
-  return (
-    <section
-      className="relative w-full h-[90vh] bg-cover bg-center"
-      style={{
-        backgroundImage:
-          "url('/images/bg_4.jpg')",
-      }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/40"></div>
+import React from 'react';
+import { motion } from 'framer-motion';
+import HeroSearchForm from './HeroSearchForm'; 
 
-      {/* Content */}
-      <div className="relative h-full flex flex-col justify-center items-center text-center text-white px-4">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
-          Explore the World with Us
-        </h1>
-        <p className="text-lg md:text-xl max-w-2xl mb-6 drop-shadow">
-          Discover breathtaking destinations, plan your perfect trip, and book
-          with ease — all in one place.
-        </p>
-        <div className="flex gap-3">
-          <a
-            href="#destinations"
-            className="px-6 py-3 bg-sky-500 hover:bg-sky-600 transition rounded-xl font-semibold shadow-lg"
-          >
-            Explore Destinations
-          </a>
-          <a
-            href="#deals"
-            className="px-6 py-3 bg-white text-slate-900 hover:bg-slate-200 transition rounded-xl font-semibold shadow-lg"
-          >
-            View Deals
-          </a>
-        </div>
-      </div>
+// Animation 
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.2,
+            delayChildren: 0.3,
+        },
+    },
+};
 
-      {/* Decorative bottom gradient */}
-      {/* <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white/80 to-transparent"></div> */}
-    </section>
-  );
-}
+const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+            type: 'spring',
+            stiffness: 100,
+            damping: 12,
+        },
+    },
+};
+
+const Hero = () => {
+    return (
+        <section className="relative h-screen bg-cover bg-center"
+                 style={{ backgroundImage: "url('/images/bg_4.jpg')" }}>
+            
+            {/* New Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+
+            {/* Content Container - Aligned Bottom-Left */}
+            <motion.div 
+                className="relative z-10 flex flex-col items-start justify-end h-full text-white 
+                           pb-24 md:pb-32 px-6 md:px-12 lg:px-24"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
+                
+                {/* Upgraded Typography */}
+                <motion.h1 
+                    className="text-5xl md:text-7xl font-extrabold drop-shadow-lg leading-tight mb-4"
+                    variants={itemVariants}
+                >
+                    Your Next Adventure Awaits
+                </motion.h1>
+
+                <motion.p
+                    className="text-xl md:text-2xl font-light max-w-2xl mb-10 drop-shadow-md"
+                    variants={itemVariants}
+                >
+                    Discover amazing travel packages and book your dream vacation with ease.
+                </motion.p>
+
+                {/* New Search Form Integration */}
+                <motion.div
+                    className="w-full"
+                    variants={itemVariants}
+                >
+                    <HeroSearchForm />
+                </motion.div>
+            </motion.div>
+        </section>
+    );
+};
+
+export default Hero;

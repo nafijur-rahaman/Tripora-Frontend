@@ -42,7 +42,7 @@ export default function Navbar() {
           className={`relative flex items-center justify-between gap-3 rounded-3xl px-5 py-3 transition-all backdrop-blur-lg ${
             scrolled
               ? "bg-slate-900/80 ring-1 ring-white/10 shadow-lg"
-              : "bg-[#0072ff]/90 shadow-xl"
+              : "bg-blue-600 shadow-xl"
           }`}
         >
           {/* Logo */}
