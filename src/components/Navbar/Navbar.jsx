@@ -1,24 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import {
-  Plane,
-  Menu,
-  X,
-  ChevronDown,
-  LogOut,
-  PlusCircle,
-  LayoutDashboard,
-} from "lucide-react";
+import { Plane, Menu, X } from "lucide-react";
 import { NavLink, useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
-import { DropLink } from "../DropLink/DropLink";
 import ThemeSwitcher from "../Switcher/ThemeSwitcher";
+import useUserRole from "../../hooks/UserRole";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
   const navigate = useNavigate();
   const { user, LogoutUser } = useContext(AuthContext);
+  const { role, roleLoading } = useUserRole();
+  // console.log("User Role:", role);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -32,10 +25,23 @@ export default function Navbar() {
     navigate("/login");
   };
 
+  // dashboard route based on role
+  const dashboardRoute = () => {
+    if (roleLoading || !role) return "/";
+    switch (role) {
+      case "admin":
+        return "/admin-dashboard";
+      case "customer":
+        return "/client-dashboard";
+      default:
+        return "/client-dashboard";
+    }
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* subtle animated gradient strip */}
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#0072ff] to-[#00c6ff]  animate-gradient-x" />
+      {/* Animated gradient strip */}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-[#0072ff] to-[#00c6ff] animate-gradient-x" />
 
       <nav className={`mx-auto max-w-7xl px-3 ${scrolled ? "mt-2" : "mt-3"}`}>
         <div
@@ -51,12 +57,8 @@ export default function Navbar() {
               <Plane className="w-5 h-5 text-white" />
             </div>
             <div className="text-white">
-              <div className="text-lg font-extrabold tracking-wide leading-none">
-                Tripora
-              </div>
-              <div className="text-[10px] uppercase opacity-90 tracking-wider">
-                Travel Management
-              </div>
+              <div className="text-lg font-extrabold tracking-wide leading-none">Tripora</div>
+              <div className="text-[10px] uppercase opacity-90 tracking-wider">Travel Management</div>
             </div>
           </a>
 
@@ -69,7 +71,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Auth */}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-3">
             <ThemeSwitcher />
             {!user ? (
               <NavLink
@@ -79,37 +81,24 @@ export default function Navbar() {
                 Login
               </NavLink>
             ) : (
-              <div className="relative">
-                <button
-                  onClick={() => setProfileOpen((prev) => !prev)}
-                  className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/20 ring-1 ring-white/30 text-white hover:bg-white/30 transition"
+              <div className="flex items-center gap-3">
+                <img
+                  src={user.photoURL}
+                  alt="Profile"
+                  className="w-8 h-8 rounded-full border-2 border-white"
+                />
+                <NavLink
+                  to={dashboardRoute()}
+                  className="px-4 py-2 rounded-xl bg-white/20 text-white font-semibold hover:bg-white/30 transition text-sm"
                 >
-                  <img
-                    src={user.photoURL}
-                    alt="Profile"
-                    className="w-8 h-8 rounded-full border-2 border-white"
-                  />
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      profileOpen ? "rotate-180" : ""
-                    }`}
-                  />
+                  Dashboard
+                </NavLink>
+                <button
+                  onClick={handleLogout}
+                  className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition text-sm"
+                >
+                  Logout
                 </button>
-                {profileOpen && (
-                  <div className="absolute right-0 mt-2 w-56 rounded-xl bg-slate-900/90 ring-white/15 ring-1 backdrop-blur-lg shadow-xl text-white p-2">
-                    <DropLink
-                      title="Add Package"
-                      icon={PlusCircle}
-                      onClick={() => navigate("/add_package")}
-                    />
-                    <DropLink
-                      title="Manage My Packages"
-                      icon={LayoutDashboard}
-                      onClick={() => navigate("/my_packages")}
-                    />
-                    <DropLink title="Logout" icon={LogOut} onClick={handleLogout} />
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -138,9 +127,7 @@ export default function Navbar() {
                   <Plane className="w-5 h-5 text-white" />
                 </div>
                 <div className="text-white">
-                  <div className="text-lg font-extrabold tracking-wide leading-none">
-                    Tripora
-                  </div>
+                  <div className="text-lg font-extrabold tracking-wide leading-none">Tripora</div>
                   <div className="text-[10px] uppercase opacity-90">Travel Management</div>
                 </div>
               </a>
@@ -169,17 +156,19 @@ export default function Navbar() {
                 </NavLink>
               ) : (
                 <>
+                  <div className="flex items-center justify-center gap-2">
+                    <img
+                      src={user.photoURL}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full border-2 border-white"
+                    />
+                    <span className="text-white font-semibold">Hello, {user.displayName || "User"}</span>
+                  </div>
                   <NavLink
-                    to="/add_package"
+                    to={dashboardRoute()}
                     className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
                   >
-                    Add Package
-                  </NavLink>
-                  <NavLink
-                    to="/my_packages"
-                    className="w-full text-center py-2 rounded-xl bg-white text-slate-900 font-semibold text-base"
-                  >
-                    Manage My Packages
+                    Dashboard
                   </NavLink>
                   <button
                     onClick={handleLogout}

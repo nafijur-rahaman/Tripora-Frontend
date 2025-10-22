@@ -3,11 +3,12 @@ import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Context/AuthContext";
 import { useNavigate } from "react-router";
+import { useApi } from "../../hooks/UseApi";
 
 export default function Register() {
   const { RegisterUser, updateUserProfile, loginWithGoogle } =
     useContext(AuthContext);
-
+  const { post } = useApi();
   const navigate = useNavigate();
 
   const [error, setError] = useState({});
@@ -42,6 +43,18 @@ export default function Register() {
     validateFields(name, value);
   };
 
+const createBackendUser = async (firebaseUser) => {
+  try {
+    await post("/create_user/", {
+      email: firebaseUser.email,
+      fullName: firebaseUser.displayName || formData.fullName || "",
+      photo: firebaseUser.photoURL || formData.photo || "",
+    });
+  } catch (err) {
+    console.error("Backend user creation failed:", err);
+  }
+};
+
   // Handle registration
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -60,6 +73,7 @@ export default function Register() {
     try {
       const result = await RegisterUser(formData.email, formData.password);
       await updateUserProfile(formData.fullName, formData.photo);
+      await createBackendUser(result.user);
 
       Swal.fire({
         icon: "success",
@@ -96,6 +110,7 @@ export default function Register() {
       const result = await loginWithGoogle();
       updateUserProfile(result.user.displayName, result.user.photoURL);
 
+      await createBackendUser(result.user);
       Swal.fire({
         icon: "success",
         title: "Welcome!",
