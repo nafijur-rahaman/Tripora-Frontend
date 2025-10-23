@@ -5,7 +5,6 @@ import Login from "../page/Login/Login";
 import Register from "../page/Register/Register";
 import AllPackages from "../page/AllPackage/AllPackages";
 import PackageDetails from "../page/PackageDetails/PackageDetails";
-import AddPackage from "../page/AddPackage/AddPackage";
 import ManageMyPackages from "../page/ManageMyPackages/ManageMyPackages";
 import AboutUs from "../page/AboutUs/AboutUs";
 import MyBooking from "../page/MyBooking/MyBooking";
@@ -17,6 +16,7 @@ import Loading from "../components/Loader/Loader";
 // import AddPackage from "../Dashboard/AdminDashboard/AddPackage";
 import AdminLayout from "../Layout/AdminLayout";
 import AdminOverview from "../Dashboard/AdminDashboard/AdminOverview";
+import AddPackage from "../Dashboard/AdminDashboard/AddPackage";
 
 export const router = createBrowserRouter([
   {
@@ -63,15 +63,6 @@ export const router = createBrowserRouter([
         },
         hydrateFallbackElement: <Loading></Loading>,
       },
-
-      {
-        path: "/add_package",
-        element: (
-          <PrivateRoute>
-            <AddPackage></AddPackage>
-          </PrivateRoute>
-        ),
-      },
       {
         path: "/my_packages",
         element: (
@@ -106,6 +97,9 @@ export const router = createBrowserRouter([
   {
     index: true,
     element: <AdminOverview></AdminOverview>
+  },{
+    path: "add-package",
+    element: <AddPackage></AddPackage>
   }
   ],
 }

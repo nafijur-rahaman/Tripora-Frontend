@@ -8,7 +8,7 @@ import {
 
 const adminLinks = [
     { icon: <FiHome />, name: 'Overview', href: '/admin/dashboard' },
-    { icon: <FiBox />, name: 'Add Package', href: '/admin/add-package' },
+    { icon: <FiBox />, name: 'Add Package', href: '/admin-dashboard/add-package' },
     { icon: <FiList />, name: 'Manage Packages', href: '/admin/manage-packages' },
     { icon: <FiUsers />, name: 'Manage Users', href: '/admin/manage-users' },
     { icon: <FiCreditCard />, name: 'All Bookings', href: '/admin/all-bookings' },
