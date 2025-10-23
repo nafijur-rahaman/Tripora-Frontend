@@ -12,6 +12,11 @@ import MyBooking from "../page/MyBooking/MyBooking";
 import Page404 from "../page/Page404/Page404";
 import PrivateRoute from "../Context/PrivateRoute";
 import Loading from "../components/Loader/Loader";
+// import DashboardLayout from "../Dashboard/AdminDashboard/DashboardLayout";
+// import AdminOverview from "../Dashboard/AdminDashboard/AdminOverview";
+// import AddPackage from "../Dashboard/AdminDashboard/AddPackage";
+import AdminLayout from "../Layout/AdminLayout";
+import AdminOverview from "../Dashboard/AdminDashboard/AdminOverview";
 
 export const router = createBrowserRouter([
   {
@@ -93,4 +98,16 @@ export const router = createBrowserRouter([
       },
     ],
   },
+
+{
+  path: "/admin-dashboard",
+  element: <AdminLayout />,
+  children: [
+  {
+    index: true,
+    element: <AdminOverview></AdminOverview>
+  }
+  ],
+}
+
 ]);
