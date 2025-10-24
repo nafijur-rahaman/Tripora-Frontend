@@ -2,17 +2,17 @@ import React from 'react';
 import { NavLink } from 'react-router';
 import {
   FiHome, FiBox, FiList, FiUsers, FiCreditCard,
-  FiUser, FiLogOut
+  FiUser, FiLogOut, FiClipboard
 } from 'react-icons/fi';
 
 const adminLinks = [
+  { icon: <FiUser />, name: 'Profile', href: '/admin-dashboard/profile' },
   { icon: <FiHome />, name: 'Overview', href: '/admin-dashboard' },
   { icon: <FiBox />, name: 'Add Package', href: '/admin-dashboard/add-package' },
   { icon: <FiList />, name: 'Manage Packages', href: '/admin-dashboard/manage-packages' },
   { icon: <FiUsers />, name: 'Manage Users', href: '/admin-dashboard/manage-users' },
-  { icon: <FiCreditCard />, name: 'All Bookings', href: '/admin-dashboard/all-bookings' },
+  { icon: <FiClipboard />, name: 'All Bookings', href: '/admin-dashboard/all-bookings' },
   { icon: <FiCreditCard />, name: 'Payments History', href: '/admin-dashboard/payments-history' },
-  { icon: <FiUser />, name: 'Profile', href: '/admin-dashboard/profile' },
 ];
 
 const customerLinks = [];
