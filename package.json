@@ -24,7 +24,8 @@
     "react-slick": "^0.31.0",
     "recharts": "^3.3.0",
     "slick-carousel": "^1.8.1",
-    "sweetalert2": "^11.22.5"
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.26.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { FiPlus, FiTrash2, FiUpload, FiDollarSign } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import {useApi} from "../../hooks/UseApi";
+import useAuth from '../../hooks/UseAuth';
+import Sweetalert from 'sweetalert2';
 
 
 
@@ -95,6 +98,11 @@ const AddPackage = () => {
     const [mainImage, setMainImage] = useState('');
     const [galleryImages, setGalleryImages] = useState(['', '', '']); 
     const [overview, setOverview] = useState('');
+    const {post} = useApi();
+    const {user} = useAuth();
+    const userEmail = user?.email || 'tanjidnafis@gmail.com';
+
+    // console.log('Authenticated User:', userEmail);
 
     const [itinerary, setItinerary] = useState([
         { day: 1, title: '', desc: '' }
@@ -126,17 +134,46 @@ const AddPackage = () => {
     };
     
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newPackage = {
             title, location, price, duration, category, 
             images: [mainImage, ...galleryImages.filter(img => img !== '')],
             overview,
-            itinerary
+            itinerary,
+            createdBy: userEmail,
+        
         };
-        console.log("Submitting new package:", newPackage);
-        alert('Package added! (Check console for data)');
+        const res = await post('/add-packages', newPackage);
+        if(res.success){
+            Sweetalert.fire({
+                icon: 'success',
+                title: 'Package Created',
+                text: 'The new travel package has been successfully created.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
 
+            // Reset form
+            setTitle('');
+            setLocation('');
+            setPrice('');
+            setDuration('');
+            setCategory('Beach');
+            setMainImage('');
+            setGalleryImages(['', '', '']);
+            setOverview('');
+            setItinerary([{ day: 1, title: '', desc: '' }]);
+        }else{
+            Sweetalert.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `${res.message || 'There was an error creating the package.'}`,
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'OK'
+            });
+        }
+ 
     };
 
     return (
