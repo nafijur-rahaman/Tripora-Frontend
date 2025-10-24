@@ -238,7 +238,9 @@ const UserRow = ({ user, openModal }) => {
                 </span>
             </td>
             {/* Joined Date */}
-            <td className="py-3 px-6 text-gray-700">{user?.createdAt}</td>
+            <td className="py-3 px-6 text-gray-700"><span>{new Date(user?.createdAt).toLocaleDateString()}</span>
+
+</td>
             {/* Action Buttons (Updated) */}
             <td className="py-3 px-6">
                 <div className="flex justify-center space-x-2">
