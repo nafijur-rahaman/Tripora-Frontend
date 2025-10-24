@@ -9,9 +9,9 @@ const adminLinks = [
   { icon: <FiHome />, name: 'Overview', href: '/admin-dashboard' },
   { icon: <FiBox />, name: 'Add Package', href: '/admin-dashboard/add-package' },
   { icon: <FiList />, name: 'Manage Packages', href: '/admin-dashboard/manage-packages' },
-  { icon: <FiUsers />, name: 'Manage Users', href: '/admin/manage-users' },
-  { icon: <FiCreditCard />, name: 'All Bookings', href: '/admin/all-bookings' },
-  { icon: <FiUser />, name: 'Profile', href: '/admin/profile' },
+  { icon: <FiUsers />, name: 'Manage Users', href: '/admin-dashboard/manage-users' },
+  { icon: <FiCreditCard />, name: 'All Bookings', href: '/admin-dashboard/all-bookings' },
+  { icon: <FiUser />, name: 'Profile', href: '/admin-dashboard/profile' },
 ];
 
 const customerLinks = [];

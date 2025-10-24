@@ -14,6 +14,7 @@ import AdminOverview from "../Dashboard/AdminDashboard/AdminOverview";
 import AddPackage from "../Dashboard/AdminDashboard/AddPackage";
 import ManagePackages from "../Dashboard/AdminDashboard/ManagePackages";
 import EditPackage from "../Dashboard/AdminDashboard/EditPackage";
+import ManageUsers from "../Dashboard/AdminDashboard/ManageUsers";
 
 export const router = createBrowserRouter([
   {
@@ -88,6 +89,9 @@ export const router = createBrowserRouter([
   },{
     path: "edit-package/:id",
     element: <EditPackage></EditPackage>
+  },{
+    path: "manage-users",
+    element: <ManageUsers></ManageUsers>
   }
   ],
 }

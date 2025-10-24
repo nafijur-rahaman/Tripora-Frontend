@@ -1,19 +1,10 @@
 import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router';
 import { FiEdit, FiTrash2, FiPlus, FiAlertTriangle } from 'react-icons/fi';
-import { motion, AnimatePresence } from 'framer-motion';
 import Pagination from "../../components/Pagination/Pagination"
 import { useApi } from '../../hooks/UseApi';
 import { useEffect } from 'react';
-
-// const allPackages = [
-//     { id: 'pkg-001', title: 'Overwater Bungalow Retreat', location: 'Bora Bora', price: 2499, duration: '7 Days' },
-//     { id: 'pkg-002', title: 'Ancient Temples & Blossoms', location: 'Kyoto, Japan', price: 3200, duration: '10 Days' },
-//     { id: 'pkg-003', title: 'Aegean Sea Caldera Views', location: 'Santorini, Greece', price: 2850, duration: '8 Days' },
-//     { id: 'pkg-004', title: 'Alpine Hiking Adventure', location: 'Swiss Alps', price: 3500, duration: '9 Days' },
-//     { id: 'pkg-005', title: 'Eternal City Discovery', location: 'Rome, Italy', price: 1900, duration: '5 Days' },
-//     { id: 'pkg-006', title: 'Luxury Beach Villa', location: 'Maldives', price: 4500, duration: '7 Days' },
-// ];
 
 const ManagePackages = () => {
 
