@@ -8,7 +8,7 @@ import {
 const adminLinks = [
   { icon: <FiHome />, name: 'Overview', href: '/admin-dashboard' },
   { icon: <FiBox />, name: 'Add Package', href: '/admin-dashboard/add-package' },
-  { icon: <FiList />, name: 'Manage Packages', href: '/admin/manage-packages' },
+  { icon: <FiList />, name: 'Manage Packages', href: '/admin-dashboard/manage-packages' },
   { icon: <FiUsers />, name: 'Manage Users', href: '/admin/manage-users' },
   { icon: <FiCreditCard />, name: 'All Bookings', href: '/admin/all-bookings' },
   { icon: <FiUser />, name: 'Profile', href: '/admin/profile' },
@@ -26,7 +26,7 @@ const DashboardSidebar = ({ userRole }) => {
     <div
       className="
         fixed top-0 left-0 
-        h-screen w-64
+        h-screen w-67.5
         flex flex-col
         bg-white border-r border-gray-200
         shadow-sm

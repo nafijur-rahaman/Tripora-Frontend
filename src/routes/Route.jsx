@@ -17,6 +17,7 @@ import Loading from "../components/Loader/Loader";
 import AdminLayout from "../Layout/AdminLayout";
 import AdminOverview from "../Dashboard/AdminDashboard/AdminOverview";
 import AddPackage from "../Dashboard/AdminDashboard/AddPackage";
+import ManagePackages from "../Dashboard/AdminDashboard/ManagePackages";
 
 export const router = createBrowserRouter([
   {
@@ -100,6 +101,9 @@ export const router = createBrowserRouter([
   },{
     path: "add-package",
     element: <AddPackage></AddPackage>
+  },{
+    path: "manage-packages",
+    element: <ManagePackages></ManagePackages>
   }
   ],
 }
