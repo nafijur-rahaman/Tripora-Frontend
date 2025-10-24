@@ -3,34 +3,56 @@ import { Link } from 'react-router';
 import { FiEdit, FiTrash2, FiPlus, FiAlertTriangle } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import Pagination from "../../components/Pagination/Pagination"
+import { useApi } from '../../hooks/UseApi';
+import { useEffect } from 'react';
 
-
-const allPackages = [
-    { id: 'pkg-001', title: 'Overwater Bungalow Retreat', location: 'Bora Bora', price: 2499, duration: '7 Days' },
-    { id: 'pkg-002', title: 'Ancient Temples & Blossoms', location: 'Kyoto, Japan', price: 3200, duration: '10 Days' },
-    { id: 'pkg-003', title: 'Aegean Sea Caldera Views', location: 'Santorini, Greece', price: 2850, duration: '8 Days' },
-    { id: 'pkg-004', title: 'Alpine Hiking Adventure', location: 'Swiss Alps', price: 3500, duration: '9 Days' },
-    { id: 'pkg-005', title: 'Eternal City Discovery', location: 'Rome, Italy', price: 1900, duration: '5 Days' },
-    { id: 'pkg-006', title: 'Luxury Beach Villa', location: 'Maldives', price: 4500, duration: '7 Days' },
-];
+// const allPackages = [
+//     { id: 'pkg-001', title: 'Overwater Bungalow Retreat', location: 'Bora Bora', price: 2499, duration: '7 Days' },
+//     { id: 'pkg-002', title: 'Ancient Temples & Blossoms', location: 'Kyoto, Japan', price: 3200, duration: '10 Days' },
+//     { id: 'pkg-003', title: 'Aegean Sea Caldera Views', location: 'Santorini, Greece', price: 2850, duration: '8 Days' },
+//     { id: 'pkg-004', title: 'Alpine Hiking Adventure', location: 'Swiss Alps', price: 3500, duration: '9 Days' },
+//     { id: 'pkg-005', title: 'Eternal City Discovery', location: 'Rome, Italy', price: 1900, duration: '5 Days' },
+//     { id: 'pkg-006', title: 'Luxury Beach Villa', location: 'Maldives', price: 4500, duration: '7 Days' },
+// ];
 
 const ManagePackages = () => {
 
+    const [allPackages, setAllPackages] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const packagesPerPage = 5;
-
-
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [packageToDelete, setPackageToDelete] = useState(null);
+    const { get, put } = useApi();
+
+    // --- Fetch Packages ---
+    useEffect(() => {
+        const fetchPackages = async () => {
+            try {
+                const res = await get("/get-all-packages");
+                if (res?.success) {
+                    setAllPackages(res.data);
+                }
+            } catch (err) {
+                console.error("Error fetching packages:", err);
+            }
+        };
+        fetchPackages();
+    }, []);
+
+    // console.log(allPackages[13]);
+
+    // --- Pagination Logic ---
+    const totalPages = Math.ceil(allPackages.length / packagesPerPage);
+
 
 
     const currentPackages = useMemo(() => {
         const start = (currentPage - 1) * packagesPerPage;
         const end = start + packagesPerPage;
         return allPackages.slice(start, end);
-    }, [currentPage]);
-    
-    const totalPages = Math.ceil(allPackages.length / packagesPerPage);
+    }, [allPackages, currentPage, packagesPerPage]);
+
+
 
 
     const openDeleteModal = (pkg) => {
@@ -57,7 +79,7 @@ const ManagePackages = () => {
                     Manage Packages
                 </h1>
                 <Link
-                    to="/admin/add-package"
+                    to="/admin-dashboard/add-package"
                     className="flex items-center space-x-2 px-5 py-2.5 bg-blue-600 text-white
                                font-semibold rounded-lg shadow-lg hover:bg-blue-700
                                transition-colors duration-300"
@@ -82,22 +104,23 @@ const ManagePackages = () => {
                                 <th className="py-4 px-6 font-medium text-center">Actions</th>
                             </tr>
                         </thead>
-                        
+
                         {/* Table Body */}
                         <tbody>
                             {currentPackages.map((pkg) => (
-                                <tr key={pkg.id} className="border-b border-gray-100 hover:bg-gray-50">
+                                <tr key={pkg._id} className="border-b border-gray-100 hover:bg-gray-50">
                                     <td className="py-4 px-6">
-                                        <span className="font-semibold text-gray-900">{pkg.title}</span>
+                                        <span className="font-semibold text-gray-900">{pkg?.title
+                                        }</span>
                                     </td>
-                                    <td className="py-4 px-6 text-gray-700">{pkg.location}</td>
-                                    <td className="py-4 px-6 text-gray-800 font-medium">${pkg.price.toLocaleString()}</td>
-                                    <td className="py-4 px-6 text-gray-700">{pkg.duration}</td>
+                                    <td className="py-4 px-6 text-gray-700">{pkg?.location}</td>
+                                    <td className="py-4 px-6 text-gray-800 font-medium">${pkg?.price?.toLocaleString()}</td>
+                                    <td className="py-4 px-6 text-gray-700">{pkg?.duration}</td>
                                     <td className="py-4 px-6">
                                         {/* Action Buttons */}
                                         <div className="flex justify-center space-x-2">
-                                            <Link 
-                                                to={`/admin/edit-package/${pkg.id}`}
+                                            <Link
+                                                to={`/admin-dashboard/edit-package/${pkg._id}`}
                                                 className="p-2 text-blue-600 hover:bg-blue-100 rounded-full transition-colors"
                                                 title="Edit"
                                             >
@@ -117,11 +140,11 @@ const ManagePackages = () => {
                         </tbody>
                     </table>
                 </div>
-                
+
                 {/* ---Pagination --- */}
                 {totalPages > 1 && (
                     <div className="p-6 border-t border-gray-100">
-                        <Pagination 
+                        <Pagination
                             currentPage={currentPage}
                             totalPages={totalPages}
                             onPageChange={setCurrentPage}
@@ -157,7 +180,7 @@ const ConfirmationModal = ({ isOpen, onClose, onConfirm, title, message }) => {
                         className="fixed inset-0 bg-black/50 backdrop-blur-sm"
                         onClick={onClose}
                     />
-                    
+
                     {/* Modal Content */}
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
