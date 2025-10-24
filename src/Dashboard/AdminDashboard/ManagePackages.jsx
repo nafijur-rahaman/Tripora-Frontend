@@ -22,7 +22,7 @@ const ManagePackages = () => {
     const packagesPerPage = 5;
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [packageToDelete, setPackageToDelete] = useState(null);
-    const { get, put } = useApi();
+    const { get, del} = useApi();
 
     // --- Fetch Packages ---
     useEffect(() => {
@@ -65,8 +65,16 @@ const ManagePackages = () => {
         setPackageToDelete(null);
     };
 
-    const handleConfirmDelete = () => {
-        console.log("Deleting package:", packageToDelete.id);
+    const handleConfirmDelete = async() => {
+        const res = await del(`/delete-package/${packageToDelete._id}`);
+
+        if (res?.success) {
+            // Remove the deleted package from the state
+            setAllPackages((prevPackages) =>
+                prevPackages.filter((pkg) => pkg._id !== packageToDelete._id)
+            );
+        }
+
         closeDeleteModal();
     };
 
