@@ -5,15 +5,10 @@ import Login from "../page/Login/Login";
 import Register from "../page/Register/Register";
 import AllPackages from "../page/AllPackage/AllPackages";
 import PackageDetails from "../page/PackageDetails/PackageDetails";
-import ManageMyPackages from "../page/ManageMyPackages/ManageMyPackages";
 import AboutUs from "../page/AboutUs/AboutUs";
-import MyBooking from "../page/MyBooking/MyBooking";
 import Page404 from "../page/Page404/Page404";
 import PrivateRoute from "../Context/PrivateRoute";
 import Loading from "../components/Loader/Loader";
-// import DashboardLayout from "../Dashboard/AdminDashboard/DashboardLayout";
-// import AdminOverview from "../Dashboard/AdminDashboard/AdminOverview";
-// import AddPackage from "../Dashboard/AdminDashboard/AddPackage";
 import AdminLayout from "../Layout/AdminLayout";
 import AdminOverview from "../Dashboard/AdminDashboard/AdminOverview";
 import AddPackage from "../Dashboard/AdminDashboard/AddPackage";
@@ -64,25 +59,10 @@ export const router = createBrowserRouter([
         },
         hydrateFallbackElement: <Loading></Loading>,
       },
-      {
-        path: "/my_packages",
-        element: (
-          <PrivateRoute>
-            <ManageMyPackages></ManageMyPackages>
-          </PrivateRoute>
-        ),
-      },
+
       {
         path: "/about_us",
         element: <AboutUs></AboutUs>,
-      },
-      {
-        path: "/my_bookings",
-        element: (
-          <PrivateRoute>
-            <MyBooking></MyBooking>
-          </PrivateRoute>
-        ),
       },
       {
         path: "*",
