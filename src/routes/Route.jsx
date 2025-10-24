@@ -16,6 +16,7 @@ import ManagePackages from "../Dashboard/AdminDashboard/ManagePackages";
 import EditPackage from "../Dashboard/AdminDashboard/EditPackage";
 import ManageUsers from "../Dashboard/AdminDashboard/ManageUsers";
 import AllBookings from "../Dashboard/AdminDashboard/AllBookings";
+import PaymentsPage from "../Dashboard/AdminDashboard/PaymentsPage";
 
 export const router = createBrowserRouter([
   {
@@ -96,6 +97,9 @@ export const router = createBrowserRouter([
   },{
     path: "all-bookings",
     element: <AllBookings></AllBookings>
+  },{
+    path: "payments-history",
+    element: <PaymentsPage></PaymentsPage>
   }
   ],
 }

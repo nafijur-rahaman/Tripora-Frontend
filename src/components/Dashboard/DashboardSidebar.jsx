@@ -11,6 +11,7 @@ const adminLinks = [
   { icon: <FiList />, name: 'Manage Packages', href: '/admin-dashboard/manage-packages' },
   { icon: <FiUsers />, name: 'Manage Users', href: '/admin-dashboard/manage-users' },
   { icon: <FiCreditCard />, name: 'All Bookings', href: '/admin-dashboard/all-bookings' },
+  { icon: <FiCreditCard />, name: 'Payments History', href: '/admin-dashboard/payments-history' },
   { icon: <FiUser />, name: 'Profile', href: '/admin-dashboard/profile' },
 ];
 
