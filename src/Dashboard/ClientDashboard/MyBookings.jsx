@@ -17,26 +17,26 @@ const filterTabs = ["Upcoming", "Past"];
 
 const MyBookings = () => {
   // --- State ---
-  const [allBookingsData, setAllBookingsData] = useState([]); // Raw data from API
-  const [isLoading, setIsLoading] = useState(true); // Loading state for API call
-  const [error, setError] = useState(null); // Error state for API call
+  const [allBookingsData, setAllBookingsData] = useState([]); 
+  const [isLoading, setIsLoading] = useState(true); 
+  const [error, setError] = useState(null); 
 
-  const [activeFilter, setActiveFilter] = useState("Upcoming"); // 'Upcoming' or 'Past'
+  const [activeFilter, setActiveFilter] = useState("Upcoming"); 
   const [searchQuery, setSearchQuery] = useState("");
-  const [sortOrder, setSortOrder] = useState("date-desc"); // Default: Newest first
+  const [sortOrder, setSortOrder] = useState("date-desc");
   const [currentPage, setCurrentPage] = useState(1);
 
   const { get } = useApi();
-  const { user, loading: authLoading } = useAuth(); // Renamed loading to authLoading
+  const { user, loading: authLoading } = useAuth(); 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookingToCancel, setBookingToCancel] = useState(null);
 
-  // --- Data Fetching ---
+
   useEffect(() => {
-    // Don't fetch if auth is loading or user isn't available
+
     if (authLoading || !user?.email) {
-      setIsLoading(false); // If no user, stop loading, show empty state later
+      setIsLoading(false); 
       return;
     }
 

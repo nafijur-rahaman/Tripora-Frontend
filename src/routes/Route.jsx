@@ -21,6 +21,7 @@ import PackageDetailsPage from "../page/PackageDetails/PackageDetails";
 import CustomerLayout from "../Layout/CustomerLayout";
 import CustomerDashboard from "../Dashboard/ClientDashboard/CustomerDashboard";
 import MyBookings from "../Dashboard/ClientDashboard/MyBookings";
+import PaymentHistory from "../Dashboard/ClientDashboard/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -102,6 +103,9 @@ export const router = createBrowserRouter([
     },{
       path: "my-bookings",
       element: <MyBookings></MyBookings>
+    },{
+      path: "payment-history",
+      element: <PaymentHistory></PaymentHistory>
     }
   ]
 }
