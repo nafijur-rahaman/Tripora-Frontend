@@ -42,6 +42,10 @@ export const router = createBrowserRouter([
 
         element: <AllPackages></AllPackages>,
       },
+      {
+        path: "package-details/:id",
+        element: <h1>Package Details</h1>
+      },
 
       {
         path: "/about_us",

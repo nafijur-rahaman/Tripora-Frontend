@@ -61,7 +61,7 @@ const PackageResults = ({ packages }) => {
             {currentPackages.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {currentPackages.map((pkg) => (
-                        <PackageCard key={pkg.id} pkg={pkg} variants={{}} />
+                        <PackageCard key={pkg._id} pkg={pkg} variants={{}} />
                     ))}
                 </div>
             ) : (

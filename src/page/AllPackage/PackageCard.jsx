@@ -1,18 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FiHeart, FiStar, FiClock } from 'react-icons/fi';
+import { useNavigate } from 'react-router';
 
 const PackageCard = ({ pkg, variants }) => {
+    const navigate = useNavigate();
+    const handleCardClick = () => {
+        navigate(`/packages-details/${pkg._id}`);
+    };
     return (
         <motion.div
             variants={variants}
-            whileHover={{ scale: 1.03 }} 
+            whileHover={{ scale: 1.03 }}
+            onClick={handleCardClick}
             transition={{ type: "spring", stiffness: 300, damping: 10 }}
             className="relative h-[450px] rounded-2xl overflow-hidden shadow-2xl group cursor-pointer"
         >
  
             <img
-                src={pkg.image}
+                src={pkg.images[0]}
                 alt={pkg.title}
                 className="absolute inset-0 w-full h-full object-cover 
                            transition-transform duration-500 ease-in-out

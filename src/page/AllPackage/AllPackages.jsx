@@ -1,75 +1,31 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiFilter, FiX } from 'react-icons/fi';
 import FilterSidebar from './FilterSidebar';
 import PackageResults from './PackageResults';
+import {useApi} from '../../hooks/UseApi';
+import useAuth from  '../../hooks/UseAuth';
 
-const allPackages = [
-    {
-        id: 1,
-        image: 'https://images.unsplash.com/photo-1512100356356-de1b84283e18?q=80&w=2575&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        location: 'Bora Bora, French Polynesia',
-        title: 'Overwater Bungalow Retreat',
-        price: 2499,
-        rating: 4.9,
-        duration: '7 Days',
-        category: 'Beach'
-    },
-    {
-        id: 2,
-        image: 'https://images.unsplash.com/photo-1542640243-2c46215363b3?q=80&w=2574&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        location: 'Kyoto, Japan',
-        title: 'Ancient Temples & Spring Blossoms',
-        price: 3200,
-        rating: 4.8,
-        duration: '10 Days',
-        category: 'Cultural'
-    },
-    {
-        id: 3,
-        image: 'https://images.unsplash.com/photo-1533105079780-52bada29356f?q=80&w=2670&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        location: 'Santorini, Greece',
-        title: 'Aegean Sea Caldera Views',
-        price: 2850,
-        rating: 4.9,
-        duration: '8 Days',
-        category: 'Relaxation'
-    },
-    {
-        id: 4,
-        image: 'https://images.unsplash.com/photo-1501555088652-42146b24896f?q=80&w=2574&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        location: 'Swiss Alps, Switzerland',
-        title: 'Alpine Hiking Adventure',
-        price: 3500,
-        rating: 4.7,
-        duration: '9 Days',
-        category: 'Adventure'
-    },
-    {
-        id: 5,
-        image: 'https://images.unsplash.com/photo-1519996529931-28324d5a630e?q=80&w=2574&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        location: 'Rome, Italy',
-        title: 'Eternal City Discovery',
-        price: 1900,
-        rating: 4.6,
-        duration: '5 Days',
-        category: 'City'
-    },
-    {
-        id: 6,
-        image: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=2568&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        location: 'Maldives',
-        title: 'Luxury Beach Villa',
-        price: 4500,
-        rating: 5.0,
-        duration: '7 Days',
-        category: 'Beach'
-    }
-];
 
 const AllPackagesPage = () => {
+    const [allPackages, setAllPackages] = useState([]); 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const { get } = useApi();
+    const { loading} = useAuth();
     
+    useEffect(() =>{
+        if (loading) return;
+        const fetchPackages = async () => {
+            try {
+                const response = await get("/get-all-packages");
+                setAllPackages(response?.data || []);
+            } catch (error) {
+                console.error("Error fetching packages:", error);
+            }
+        };
+        fetchPackages();
+
+    },[loading]);
 
     const [filters, setFilters] = useState({
         priceRange: [0, 5000],
@@ -130,7 +86,7 @@ const AllPackagesPage = () => {
 
                     {/* --- Package Results --- */}
                     <main className="lg:col-span-3">
-                        <PackageResults packages={filteredPackages} />
+                        <PackageResults  packages={filteredPackages} />
                     </main>
 
                 </div>
