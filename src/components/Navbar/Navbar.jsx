@@ -66,7 +66,6 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-6 text-white font-semibold">
             <NavLink to="/" className="hover:text-[#00c6ff] transition">Home</NavLink>
             <NavLink to="/all_packages" className="hover:text-[#00c6ff] transition">All Packages</NavLink>
-            {user && <NavLink to="/my_bookings" className="hover:text-[#00c6ff] transition">My Bookings</NavLink>}
             <NavLink to="/about_us" className="hover:text-[#00c6ff] transition">About Us</NavLink>
           </div>
 

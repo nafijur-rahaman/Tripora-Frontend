@@ -7,7 +7,7 @@ import { AuthContext } from "../Context/AuthContext";
 const BASE_URL = "http://localhost:3000/api";
 
 export const useApi = () => {
-  const { token } = useContext(AuthContext); // ✅ use Firebase token
+  const { token } = useContext(AuthContext); // use Firebase token
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();

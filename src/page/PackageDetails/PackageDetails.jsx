@@ -6,6 +6,13 @@ import {useApi} from '../../hooks/UseApi';
 import useAuth from "../../hooks/UseAuth";
 import { useParams } from "react-router";
 
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+
+
+// Replace with your publishable key
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PK);
+
 
 
 const PackageDetailsPage = () => {
@@ -13,6 +20,9 @@ const PackageDetailsPage = () => {
   const { id } = useParams();
   const {loading} = useAuth();
   const {get} = useApi();
+  const options = {
+    appearance: {theme: 'stripe' },
+  }
 
   useEffect(() => {
     const fetchPackageData = async () => {
@@ -29,7 +39,7 @@ const PackageDetailsPage = () => {
  
  const pkg = packageData;
 
- console.log(pkg);
+//  console.log(pkg);
 
   return (
     <div className="pt-32 pb-24 bg-white">
@@ -61,7 +71,7 @@ const PackageDetailsPage = () => {
               </h2>
               <p className="text-gray-600 mt-2">
                 Rated <span className="font-bold">{pkg?.rating} ★</span> (
-                {pkg?.reviewsCount} reviews)
+                {pkg?.reviewCount} reviews)
               </p>
             </div>
 
@@ -73,16 +83,22 @@ const PackageDetailsPage = () => {
           </div>
 
           {/* Right Column (Booking) */}
-          <aside className="lg:col-span-1">
-            {/* The sticky container */}
-            <div className="sticky top-32">
-              <BookingWidget
-                price={pkg?.price}
-                rating={pkg?.rating}
-                reviewsCount={pkg?.reviewsCount}
-              />
-            </div>
-          </aside>
+                    <aside className="lg:col-span-1">
+                        <div className="sticky top-32">
+                            {/* --- Wrap BookingWidget with Elements --- */}
+                            <Elements stripe={stripePromise} options={options}>
+                                <BookingWidget 
+                                    price={pkg.price} 
+                                    rating={pkg.rating} 
+                                    reviewsCount={pkg.reviewCount}
+                                    // Pass necessary data for payment API call
+                                    packageId={pkg._id} 
+                                    packageName={pkg.title}
+                                    customerEmail={'customer@example.com'} // Get this from auth context
+                                />
+                            </Elements>
+                        </div>
+                    </aside>
         </div>
       </div>
     </div>
