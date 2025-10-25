@@ -1,17 +1,15 @@
-import React, { useState } from "react";
-import { Outlet } from "react-router";
-import { FiMenu } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
-import DashboardSidebar from "../components/Dashboard/DashboardSidebar";
-import useUserRole from "../hooks/UserRole";
+import React, { useState } from 'react';
+import { Outlet } from 'react-router';
+import { FiMenu } from 'react-icons/fi';
+import { motion, AnimatePresence } from 'framer-motion';
+import DashboardSidebar from '../components/Dashboard/DashboardSidebar';
+import useUserRole from '../hooks/UserRole';
 
 
-const AdminLayout = () => {
+const CustomerLayout = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const { role, roleLoading } = useUserRole();
-
-
-  const userRole = role || "admin";
+  const userRole = role || 'customer';
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -32,10 +30,10 @@ const AdminLayout = () => {
               onClick={() => setIsMobileOpen(false)}
             />
             <motion.aside
-              initial={{ x: "-100%" }}
+              initial={{ x: '-100%' }}
               animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
               className="fixed top-0 left-0 w-64 h-full bg-white z-50 lg:hidden shadow-md"
             >
               <DashboardSidebar userRole={userRole} />
@@ -59,11 +57,11 @@ const AdminLayout = () => {
           <div className="flex items-center space-x-3 text-gray-800">
             <img
               src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2574&auto=format&fit=crop"
-              alt="Admin Avatar"
+              alt="Customer Avatar"
               className="w-10 h-10 rounded-full object-cover"
             />
             <div>
-              <span className="font-semibold text-sm">Admin User</span>
+              <span className="font-semibold text-sm">Customer User</span>
               <span className="block text-xs text-gray-500">View Profile</span>
             </div>
           </div>
@@ -78,4 +76,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default CustomerLayout;

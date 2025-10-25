@@ -2,20 +2,28 @@ import React from 'react';
 import { NavLink } from 'react-router';
 import {
   FiHome, FiBox, FiList, FiUsers, FiCreditCard,
-  FiUser, FiLogOut, FiClipboard
+  FiUser, FiLogOut, FiClipboard, FiHeart
 } from 'react-icons/fi';
 
 const adminLinks = [
-  { icon: <FiUser />, name: 'Profile', href: '/admin-dashboard/profile' },
-  { icon: <FiHome />, name: 'Overview', href: '/admin-dashboard' },
-  { icon: <FiBox />, name: 'Add Package', href: '/admin-dashboard/add-package' },
-  { icon: <FiList />, name: 'Manage Packages', href: '/admin-dashboard/manage-packages' },
-  { icon: <FiUsers />, name: 'Manage Users', href: '/admin-dashboard/manage-users' },
-  { icon: <FiClipboard />, name: 'All Bookings', href: '/admin-dashboard/all-bookings' },
-  { icon: <FiCreditCard />, name: 'Payments History', href: '/admin-dashboard/payments-history' },
+    { icon: <FiHome />, name: 'Overview', href: '/admin-dashboard' },
+    { icon: <FiUser />, name: 'Profile', href: '/admin-dashboard/profile' },
+    { icon: <FiBox />, name: 'Add Package', href: '/admin-dashboard/add-package' },
+    { icon: <FiList />, name: 'Manage Packages', href: '/admin-dashboard/manage-packages' },
+    { icon: <FiUsers />, name: 'Manage Users', href: '/admin-dashboard/manage-users' },
+    { icon: <FiClipboard />, name: 'All Bookings', href: '/admin-dashboard/all-bookings' },
+    { icon: <FiCreditCard />, name: 'Payments History', href: '/admin-dashboard/payments-history' },
 ];
 
-const customerLinks = [];
+
+const customerLinks = [
+    { icon: <FiHome />, name: 'Dashboard', href: '/dashboard' },
+    { icon: <FiList />, name: 'My Bookings', href: '/dashboard/my-bookings' },
+    { icon: <FiHeart />, name: 'My Wishlist', href: '/dashboard/wishlist' },
+    { icon: <FiUser />, name: 'My Profile', href: '/dashboard/profile' },
+];
+
+
 
 const DashboardSidebar = ({ userRole }) => {
   const links = userRole === 'admin' ? adminLinks : customerLinks;

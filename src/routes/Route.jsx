@@ -18,6 +18,8 @@ import AllBookings from "../Dashboard/AdminDashboard/AllBookings";
 import PaymentsPage from "../Dashboard/AdminDashboard/PaymentsPage";
 import ProfilePage from "../Dashboard/AdminDashboard/ProfilePage";
 import PackageDetailsPage from "../page/PackageDetails/PackageDetails";
+import CustomerLayout from "../Layout/CustomerLayout";
+import CustomerDashboard from "../Dashboard/ClientDashboard/CustomerDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -89,6 +91,15 @@ export const router = createBrowserRouter([
     element: <ProfilePage></ProfilePage>
   }
   ],
+},{
+  path: "client-dashboard",
+  element: <CustomerLayout></CustomerLayout>,
+  children: [
+    {
+      index: true,
+      element: <CustomerDashboard></CustomerDashboard>
+    }
+  ]
 }
 
 ]);
