@@ -4,7 +4,6 @@ import MainLayout from "../Layout/MainLayout";
 import Login from "../page/Login/Login";
 import Register from "../page/Register/Register";
 import AllPackages from "../page/AllPackage/AllPackages";
-import PackageDetails from "../page/PackageDetails/PackageDetails";
 import AboutUs from "../page/AboutUs/AboutUs";
 import Page404 from "../page/Page404/Page404";
 import PrivateRoute from "../Context/PrivateRoute";
@@ -42,27 +41,6 @@ export const router = createBrowserRouter([
         path: "/all_packages",
 
         element: <AllPackages></AllPackages>,
-      },
-      {
-        path: "/package_details/:_id",
-        element: (
-          <PrivateRoute>
-            <PackageDetails></PackageDetails>
-          </PrivateRoute>
-        ),
-        loader: async ({ params }) => {
-          const token = localStorage.getItem("token");
-
-          return fetch(
-            `https://tripora-server.vercel.app/api/get_package/${params._id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-        },
-        hydrateFallbackElement: <Loading></Loading>,
       },
 
       {

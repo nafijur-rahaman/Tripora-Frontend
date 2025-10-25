@@ -1,186 +1,167 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
-import { NavLink } from "react-router";
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiFilter, FiX } from 'react-icons/fi';
+import FilterSidebar from './FilterSidebar';
+import PackageResults from './PackageResults';
 
-export default function AllPackages() {
-  
-  const [packages, setPackages] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const token = localStorage.getItem("token");
+const allPackages = [
+    {
+        id: 1,
+        image: 'https://images.unsplash.com/photo-1512100356356-de1b84283e18?q=80&w=2575&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        location: 'Bora Bora, French Polynesia',
+        title: 'Overwater Bungalow Retreat',
+        price: 2499,
+        rating: 4.9,
+        duration: '7 Days',
+        category: 'Beach'
+    },
+    {
+        id: 2,
+        image: 'https://images.unsplash.com/photo-1542640243-2c46215363b3?q=80&w=2574&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        location: 'Kyoto, Japan',
+        title: 'Ancient Temples & Spring Blossoms',
+        price: 3200,
+        rating: 4.8,
+        duration: '10 Days',
+        category: 'Cultural'
+    },
+    {
+        id: 3,
+        image: 'https://images.unsplash.com/photo-1533105079780-52bada29356f?q=80&w=2670&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        location: 'Santorini, Greece',
+        title: 'Aegean Sea Caldera Views',
+        price: 2850,
+        rating: 4.9,
+        duration: '8 Days',
+        category: 'Relaxation'
+    },
+    {
+        id: 4,
+        image: 'https://images.unsplash.com/photo-1501555088652-42146b24896f?q=80&w=2574&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        location: 'Swiss Alps, Switzerland',
+        title: 'Alpine Hiking Adventure',
+        price: 3500,
+        rating: 4.7,
+        duration: '9 Days',
+        category: 'Adventure'
+    },
+    {
+        id: 5,
+        image: 'https://images.unsplash.com/photo-1519996529931-28324d5a630e?q=80&w=2574&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        location: 'Rome, Italy',
+        title: 'Eternal City Discovery',
+        price: 1900,
+        rating: 4.6,
+        duration: '5 Days',
+        category: 'City'
+    },
+    {
+        id: 6,
+        image: 'https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=2568&auto=format&fit=crop&ixlib-rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        location: 'Maldives',
+        title: 'Luxury Beach Villa',
+        price: 4500,
+        rating: 5.0,
+        duration: '7 Days',
+        category: 'Beach'
+    }
+];
+
+const AllPackagesPage = () => {
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
+    
+
+    const [filters, setFilters] = useState({
+        priceRange: [0, 5000],
+        duration: 0,
+        categories: [],
+        rating: 0
+    });
+    
+
+    const filteredPackages = allPackages.filter(pkg => {
+        const byPrice = pkg.price >= filters.priceRange[0] && pkg.price <= filters.priceRange[1];
+        const byRating = filters.rating === 0 ? true : pkg.rating >= filters.rating;
+        const byCategory = filters.categories.length === 0 ? true : filters.categories.includes(pkg.category);
+        return byPrice && byRating && byCategory;
+    });
+
+    return (
+        <div className="pt-32 pb-24 bg-gray-50 min-h-screen"> 
+            <div className="container mx-auto px-6">
+                
+                {/* --- Page Header --- */}
+                <div className="mb-8 text-center">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900">
+                        Explore All Packages
+                    </h1>
+                    <p className="text-lg text-gray-600 mt-2">
+                        Find the perfect adventure tailored to you.
+                    </p>
+                </div>
+
+
+                {/* --- Mobile Filter Button --- */}
+                <div className="lg:hidden mb-6 flex justify-between items-center">
+                    <span className="text-lg font-semibold text-gray-700">Filter Results</span>
+                    <button
+                        onClick={() => setIsFilterOpen(true)}
+                        className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg shadow-lg"
+                    >
+                        <FiFilter />
+                        <span>Filters</span>
+                    </button>
+                </div>
+
+
+
+                {/* --- Main Content Grid --- */}
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+
+                    {/* --- 1. Filter Sidebar (Desktop) --- */}
+                    <aside className="hidden lg:block lg:col-span-1">
+                        <div className="sticky top-32">
+                            <FilterSidebar filters={filters} setFilters={setFilters} />
+                        </div>
+                    </aside>
 
 
 
 
-  // Fetch packages
-  useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const res = await axios.get(
-          "https://tripora-server.vercel.app/api/get_all_packages/"
-        );
-        setPackages(Array.isArray(res.data.data) ? res.data.data : []);
-      } catch (err) {
-        setError("Failed to load packages.");
-        // console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchPackages();
-  }, [token]);
+                    {/* --- Package Results --- */}
+                    <main className="lg:col-span-3">
+                        <PackageResults packages={filteredPackages} />
+                    </main>
+
+                </div>
+            </div>
 
 
 
-
-  // Fetch categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      // console.log(token);
-      try {
-        const res = await axios.get("https://tripora-server.vercel.app/api/categories");
-        setCategories(res.data.map((cat) => cat.name));
-      } catch (err) {
-        // console.error(err);
-      }
-    };
-    fetchCategories();
-  }, [token]);
-
-
-
-  //  Filter packages
-const filteredPackages = packages.filter(
-  (pkg) =>
-    (activeCategory === "All" || pkg.category === activeCategory) &&
-    (
-      pkg.tour_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.destination.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-);
-
-  return (
-    <section className="py-30 bg-gray-50" id="packages">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-gray-800">
-            Your Journey Starts Here
-          </h2>
-          <p className="text-lg text-gray-600 mt-2">
-            Featured Packages for Your Next Adventure
-          </p>
+            {/* --- Mobile Filter Modal --- */}
+            <AnimatePresence>
+                {isFilterOpen && (
+                    <motion.div
+                        initial={{ x: "-100%" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "-100%" }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        className="fixed top-0 left-0 w-full h-full bg-white z-[100] lg:hidden overflow-y-auto"
+                    >
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200">
+                            <h3 className="text-2xl font-bold">Filters</h3>
+                            <button onClick={() => setIsFilterOpen(false)}>
+                                <FiX className="w-7 h-7" />
+                            </button>
+                        </div>
+                        <div className="p-6">
+                            <FilterSidebar filters={filters} setFilters={setFilters} />
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
-        {/* Search Bar */}
-        <div className="flex justify-center mb-6">
-          <input
-            type="text"
-            placeholder="Search by package name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full md:w-1/2 p-3 rounded-xl border border-gray-300 shadow-sm focus:ring-2 focus:ring-sky-500 focus:outline-none transition"
-          />
-        </div>
+    );
+};
 
-        {/* Category Filters */}
-        <div className="flex justify-center mb-8 flex-wrap gap-3">
-          <button
-            onClick={() => setActiveCategory("All")}
-            className={`px-4 py-2 rounded-full font-medium transition ${
-              activeCategory === "All"
-                ? "bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600 text-white shadow-lg"
-                : "bg-white text-gray-700 hover:bg-gray-200"
-            }`}
-          >
-            All
-          </button>
-          {categories.map((cat, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 rounded-full font-medium transition ${
-                activeCategory === cat
-                  ? "bg-gradient-to-r from-teal-400 via-cyan-500 to-blue-600 text-white shadow-lg"
-                  : "bg-white text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-
-        {/* Packages Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence>
-            {loading
-              ? // Skeleton Loading Cards
-                Array.from({ length: 6 }).map((_, i) => (
-                  <motion.div
-                    key={i}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse"
-                  >
-                    <div className="w-full h-48 bg-gray-300"></div>
-                    <div className="p-5 space-y-3">
-                      <div className="h-6 bg-gray-300 rounded w-3/4"></div>
-                      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                      <div className="h-4 bg-gray-300 rounded w-1/3"></div>
-                      <div className="h-6 bg-gray-300 rounded w-1/2 mt-4"></div>
-                    </div>
-                  </motion.div>
-                ))
-              : filteredPackages.map((pkg) => (
-                  <motion.div
-                    key={pkg._id}
-                    layout
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 30 }}
-                    transition={{ duration: 0.5 }}
-                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:scale-105 transition-transform"
-                  >
-                    <img
-                      src={pkg.image}
-                      alt={pkg.tour_name}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-5">
-                      <h3 className="text-xl font-semibold mb-2 text-gray-800">
-                        {pkg.tour_name}
-                      </h3>
-                      <div className="text-gray-600 text-sm mb-1">
-                        Guide: {pkg.guide_name}
-                      </div>
-                      <div className="text-gray-600 text-sm mb-1">
-                        Duration: {pkg.duration}
-                      </div>
-                      <div className="text-gray-600 text-sm mb-1">
-                        Departure: {pkg.departure_date}
-                      </div>
-                      <div className="text-gray-600 text-sm mb-1">
-                        Destination: {pkg.destination}
-                      </div>
-                      <div className="text-lg font-bold text-gray-800 mb-4">
-                        Price: ${pkg.price}
-                      </div>
-                      <NavLink
-                        to={`/package_details/${pkg._id}`}
-                        className="block w-full text-center bg-sky-500 hover:bg-sky-600  text-white py-2 rounded-xl  transition"
-                      >
-                        View Details
-                      </NavLink>
-                    </div>
-                  </motion.div>
-                ))}
-          </AnimatePresence>
-        </div>
-      </div>
-    </section>
-  );
-}
+export default AllPackagesPage;
