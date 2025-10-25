@@ -22,6 +22,7 @@ import CustomerLayout from "../Layout/CustomerLayout";
 import CustomerDashboard from "../Dashboard/ClientDashboard/CustomerDashboard";
 import MyBookings from "../Dashboard/ClientDashboard/MyBookings";
 import PaymentHistory from "../Dashboard/ClientDashboard/PaymentHistory";
+import CustomerProfile from "../Dashboard/ClientDashboard/CustomerProfile";
 
 export const router = createBrowserRouter([
   {
@@ -106,6 +107,9 @@ export const router = createBrowserRouter([
     },{
       path: "payment-history",
       element: <PaymentHistory></PaymentHistory>
+    },{
+      path: "profile",
+      element: <CustomerProfile></CustomerProfile>
     }
   ]
 }

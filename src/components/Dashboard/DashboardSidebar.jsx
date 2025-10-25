@@ -17,11 +17,11 @@ const adminLinks = [
 
 
 const customerLinks = [
+  { icon: <FiUser />, name: 'My Profile', href: '/client-dashboard/profile' },
     { icon: <FiHome />, name: 'Dashboard', href: '/client-dashboard' },
     { icon: <FiList />, name: 'My Bookings', href: '/client-dashboard/my-bookings' },
     // { icon: <FiHeart />, name: 'My Wishlist', href: '/client-dashboard/wishlist' },
     { icon: <FiCreditCard />, name: 'Payment History', href: '/client-dashboard/payment-history' },
-    { icon: <FiUser />, name: 'My Profile', href: '/client-dashboard/profile' },
 ];
 
 
