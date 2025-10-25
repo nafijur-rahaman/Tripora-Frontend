@@ -9,6 +9,8 @@ const tabs = [
     { icon: <FiMap />, name: 'Location' },
 ];
 
+
+
 const PackageInfoTabs = ({ overview, itinerary }) => {
     const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
@@ -71,7 +73,7 @@ const ItineraryTab = ({ itinerary }) => (
     <div className="space-y-6">
         {itinerary.map((day) => (
             <div key={day.day} className="flex items-start space-x-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-blue-100 text-blue-600
+                <div className="flex-shrink-0 w-17 px-2 h-12 bg-blue-100 text-blue-600
                                 rounded-lg flex items-center justify-center font-bold text-lg">
                     Day {day.day}
                 </div>
@@ -95,7 +97,6 @@ const ReviewsTab = () => (
 const LocationTab = () => (
     <div>
         <h3 className="text-2xl font-bold mb-4">Location</h3>
-        {/* A simple map placeholder */}
         <div className="aspect-video w-full bg-gray-200 rounded-lg flex items-center justify-center">
             <p className="text-gray-500">Embedded map (e.g., Google Maps) will be here.</p>
         </div>
