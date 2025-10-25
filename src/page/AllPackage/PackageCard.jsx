@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 const PackageCard = ({ pkg, variants }) => {
     const navigate = useNavigate();
     const handleCardClick = () => {
-        navigate(`/packages-details/${pkg._id}`);
+        navigate(`/package-details/${pkg._id}`);
     };
     return (
         <motion.div

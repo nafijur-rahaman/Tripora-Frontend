@@ -17,6 +17,7 @@ import ManageUsers from "../Dashboard/AdminDashboard/ManageUsers";
 import AllBookings from "../Dashboard/AdminDashboard/AllBookings";
 import PaymentsPage from "../Dashboard/AdminDashboard/PaymentsPage";
 import ProfilePage from "../Dashboard/AdminDashboard/ProfilePage";
+import PackageDetailsPage from "../page/PackageDetails/PackageDetails";
 
 export const router = createBrowserRouter([
   {
@@ -44,7 +45,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "package-details/:id",
-        element: <h1>Package Details</h1>
+        element: <PackageDetailsPage></PackageDetailsPage>
       },
 
       {
