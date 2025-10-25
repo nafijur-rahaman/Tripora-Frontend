@@ -20,6 +20,7 @@ import ProfilePage from "../Dashboard/AdminDashboard/ProfilePage";
 import PackageDetailsPage from "../page/PackageDetails/PackageDetails";
 import CustomerLayout from "../Layout/CustomerLayout";
 import CustomerDashboard from "../Dashboard/ClientDashboard/CustomerDashboard";
+import MyBookings from "../Dashboard/ClientDashboard/MyBookings";
 
 export const router = createBrowserRouter([
   {
@@ -98,6 +99,9 @@ export const router = createBrowserRouter([
     {
       index: true,
       element: <CustomerDashboard></CustomerDashboard>
+    },{
+      path: "my-bookings",
+      element: <MyBookings></MyBookings>
     }
   ]
 }
