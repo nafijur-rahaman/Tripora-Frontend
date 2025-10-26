@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Pagination from "../../components/Pagination/Pagination"; 
 import { useApi } from "../../hooks/UseApi"; 
 import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal'; 
+
 const filterTabs = ['All', 'Succeeded', 'Refunded', 'Failed'];
 
 const PaymentsPage = () => {
@@ -20,7 +21,7 @@ const PaymentsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [paymentToActOn, setPaymentToActOn] = useState(null);
 
-    const { get } = useApi();
+    const { get, post } = useApi();
     const paymentsPerPage = 6;
 
     // --- Data Fetching ---
@@ -43,18 +44,20 @@ const PaymentsPage = () => {
             }
         };
         fetchData();
-    }, []); 
+    }, []);
 
     // --- Filtering & Sorting ---
     const filteredPayments = useMemo(() => {
         return allPayments.filter(payment => {
-
             let matchesFilter = true;
             if (activeFilter !== "All") {
                 const filterStatus = activeFilter.toLowerCase();
-                matchesFilter = payment.status?.toLowerCase() === filterStatus;
+                if (filterStatus === 'refunded') {
+                    matchesFilter = payment.refunded === true;
+                } else {
+                    matchesFilter = payment.status?.toLowerCase() === filterStatus;
+                }
             }
-
 
             const sq = searchQuery.toLowerCase();
             let matchesSearch = true;
@@ -65,15 +68,14 @@ const PaymentsPage = () => {
                     payment.bookingId?.toLowerCase().includes(sq) ||
                     payment.packageId?.toLowerCase().includes(sq);
             }
+
             return matchesFilter && matchesSearch;
         });
     }, [searchQuery, activeFilter, allPayments]);
 
-
     const sortedPayments = useMemo(() => {
         return [...filteredPayments].sort((a, b) => b.created - a.created);
     }, [filteredPayments]);
-
 
     const currentPayments = useMemo(() => {
         const start = (currentPage - 1) * paymentsPerPage;
@@ -83,7 +85,7 @@ const PaymentsPage = () => {
 
     const totalPages = Math.ceil(sortedPayments.length / paymentsPerPage);
 
-
+    // --- Modal Handlers ---
     const openRefundModal = (payment) => {
         setPaymentToActOn(payment);
         setIsModalOpen(true);
@@ -92,30 +94,47 @@ const PaymentsPage = () => {
         setIsModalOpen(false);
         setPaymentToActOn(null);
     };
-    const handleConfirmRefund = () => {
-        if (!paymentToActOn) return;
-        console.log(`Refunding payment: ${paymentToActOn.paymentIntentId}`);
-        //later implement
+const handleConfirmRefund = async () => {
+    if (!paymentToActOn) return;
+
+    try {
+        setIsLoading(true); 
+        const res = await post(`/refund-payment/${paymentToActOn.paymentIntentId}`);
+        if (res.success) {
+            setAllPayments(prev =>
+                prev.map(p =>
+                    p._id === paymentToActOn._id ? { ...p, refunded: false } : p
+                )
+            );
+        } else {
+            alert(res.message || "Refund failed");
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Something went wrong");
+    } finally {
         closeModal();
-    };
+        setIsLoading(false);
+    }
+};
 
 
     if (isLoading) {
-         return (
-             <div className="flex justify-center items-center h-64">
-                 <FiLoader className="animate-spin text-blue-600 text-4xl" />
-                 <span className="ml-4 text-lg font-semibold text-gray-700">Loading payments...</span>
-             </div>
-         );
+        return (
+            <div className="flex justify-center items-center h-64">
+                <FiLoader className="animate-spin text-blue-600 text-4xl" />
+                <span className="ml-4 text-lg font-semibold text-gray-700">Loading payments...</span>
+            </div>
+        );
     }
     if (error) {
-         return (
-             <div className="text-center py-16 text-red-600">
-                 <FiAlertTriangle className="mx-auto text-4xl mb-4" />
-                 <h3 className="text-2xl font-bold">Could Not Load Payments</h3>
-                 <p className="mt-2">{error}</p>
-             </div>
-         );
+        return (
+            <div className="text-center py-16 text-red-600">
+                <FiAlertTriangle className="mx-auto text-4xl mb-4" />
+                <h3 className="text-2xl font-bold">Could Not Load Payments</h3>
+                <p className="mt-2">{error}</p>
+            </div>
+        );
     }
 
     return (
@@ -150,8 +169,8 @@ const PaymentsPage = () => {
                         placeholder="Search ID, Email, Booking..."
                         value={searchQuery}
                         onChange={(e) => {
-                             setSearchQuery(e.target.value);
-                             setCurrentPage(1);
+                            setSearchQuery(e.target.value);
+                            setCurrentPage(1);
                         }}
                         className="w-full md:w-72 pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
@@ -180,10 +199,10 @@ const PaymentsPage = () => {
                                     <PaymentRow key={payment._id} payment={payment} onRefund={openRefundModal} />
                                 ))
                             ) : (
-                                 <tr>
-                                     <td colSpan="7" className="text-center py-16 text-gray-500">
-                                         No transactions match your criteria.
-                                     </td>
+                                <tr>
+                                    <td colSpan="7" className="text-center py-16 text-gray-500">
+                                        No transactions match your criteria.
+                                    </td>
                                 </tr>
                             )}
                         </tbody>
@@ -223,20 +242,21 @@ export default PaymentsPage;
 // --- Sub-Component for Payment Row ---
 const PaymentRow = ({ payment, onRefund }) => {
 
-    const getStatusInfo = (status) => {
+    const getStatusInfo = (status, refunded) => {
+        if (refunded) {
+            return { text: 'Refund Requested', chip: 'bg-gray-100 text-gray-700', icon: <FiRefreshCcw className="w-4 h-4 mr-1.5"/> };
+        }
         switch (status?.toLowerCase()) {
             case 'succeeded':
                 return { text: 'Succeeded', chip: 'bg-green-100 text-green-700', icon: <FiCheckCircle className="w-4 h-4 mr-1.5"/> };
-            case 'refunded':
-                return { text: 'Refunded', chip: 'bg-gray-100 text-gray-700', icon: <FiRefreshCcw className="w-4 h-4 mr-1.5"/> };
             case 'failed':
                  return { text: 'Failed', chip: 'bg-red-100 text-red-700', icon: <FiXCircle className="w-4 h-4 mr-1.5"/> };
-            default: // Handle unknown or pending statuses generally
+            default:
                 return { text: status || 'Unknown', chip: 'bg-yellow-100 text-yellow-700', icon: <FiLoader className="w-4 h-4 mr-1.5 animate-spin"/> };
         }
     };
 
-    const { text: statusText, chip, icon } = getStatusInfo(payment.status);
+    const { text: statusText, chip, icon } = getStatusInfo(payment.status, payment.refunded);
 
     const formattedDate = payment.created
         ? new Date(payment.created * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
@@ -245,7 +265,6 @@ const PaymentRow = ({ payment, onRefund }) => {
     const formattedAmount = payment.amount
         ? (payment.amount / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' })
         : 'N/A';
-
 
     return (
         <tr className="border-b border-gray-100 hover:bg-gray-50">
@@ -267,8 +286,8 @@ const PaymentRow = ({ payment, onRefund }) => {
                 <span className="font-semibold text-gray-900">{payment.email}</span>
             </td>
             <td className="py-4 px-6">
-                 <span className="font-semibold text-gray-800" title={`Package ID: ${payment.packageId}`}>Booking: {payment.bookingId || 'N/A'}</span>
-                 <span className="block text-xs text-gray-500">Package ID: {payment.packageId ? `${payment.packageId.substring(0, 8)}...` : 'N/A'}</span>
+                <span className="font-semibold text-gray-800" title={`Package ID: ${payment.packageId}`}>Booking: {payment.bookingId || 'N/A'}</span>
+                <span className="block text-xs text-gray-500">Package ID: {payment.packageId ? `${payment.packageId.substring(0, 8)}...` : 'N/A'}</span>
             </td>
             <td className="py-4 px-6 text-gray-800 font-semibold">{formattedAmount}</td>
             <td className="py-4 px-6">
@@ -279,7 +298,7 @@ const PaymentRow = ({ payment, onRefund }) => {
             </td>
             <td className="py-4 px-6">
                 <div className="flex justify-center space-x-2">
-                    {payment.status?.toLowerCase() === 'succeeded' && (
+                    {payment.status?.toLowerCase() === 'succeeded' && payment.refunded && (
                         <button
                             onClick={() => onRefund(payment)}
                             className="p-2 text-red-600 hover:bg-red-100 rounded-full transition-colors"

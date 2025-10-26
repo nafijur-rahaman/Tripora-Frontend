@@ -1,46 +1,37 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  FiAlertTriangle,
-  FiSearch,
-  FiChevronDown,
-  FiLoader,
-} from "react-icons/fi";
+import { FiAlertTriangle, FiSearch, FiChevronDown, FiLoader } from "react-icons/fi";
 import CustomerBookingCard from "./CustomerBookingCard";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal";
 import Pagination from "../../components/Pagination/Pagination";
 import useAuth from "../../hooks/UseAuth";
 import { useApi } from "../../hooks/UseApi";
-import { useEffect } from "react";
 
 const filterTabs = ["Upcoming", "Past"];
 
 const MyBookings = () => {
   // --- State ---
-  const [allBookingsData, setAllBookingsData] = useState([]); 
-  const [isLoading, setIsLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-
-  const [activeFilter, setActiveFilter] = useState("Upcoming"); 
+  const [allBookingsData, setAllBookingsData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("Upcoming");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortOrder, setSortOrder] = useState("date-desc");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { get } = useApi();
-  const { user, loading: authLoading } = useAuth(); 
+  const { get, put } = useApi();
+  const { user, loading: authLoading } = useAuth();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookingToCancel, setBookingToCancel] = useState(null);
 
+  const bookingsPerPage = 3;
 
+  // --- Fetch user bookings ---
   useEffect(() => {
+    if (authLoading || !user?.email) return setIsLoading(false);
 
-    if (authLoading || !user?.email) {
-      setIsLoading(false); 
-      return;
-    }
-
-    const fetchData = async () => {
+    const fetchBookings = async () => {
       setIsLoading(true);
       setError(null);
       try {
@@ -58,11 +49,10 @@ const MyBookings = () => {
       }
     };
 
-    fetchData();
+    fetchBookings();
   }, [user, authLoading]);
 
-  const bookingsPerPage = 3;
-
+  // --- Process bookings ---
   const processedBookingsList = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -71,14 +61,10 @@ const MyBookings = () => {
       const bookingDate = new Date(booking.date);
       bookingDate.setHours(0, 0, 0, 0);
 
-      const status = bookingDate >= today ? "Upcoming" : "Past";
-
       return {
         ...booking,
-        status: status,
-
-        packageTitle:
-          booking.packageInfo?.title || booking.packageName || "N/A",
+        status: bookingDate >= today ? "Upcoming" : "Past",
+        packageTitle: booking.packageInfo?.title || booking.packageName || "N/A",
         location: booking.packageInfo?.location || "N/A",
         image: booking.packageInfo?.images || "default_image_path.jpg",
         price: parseFloat(booking.packageInfo?.price) || 0,
@@ -87,20 +73,18 @@ const MyBookings = () => {
     });
   }, [allBookingsData]);
 
-  // --- Filtering & Sorting ---
+  // --- Filter & Sort ---
   const filteredAndSortedBookings = useMemo(() => {
     const sq = searchQuery.toLowerCase();
 
-    let items = processedBookingsList.filter(
-      (booking) => booking.status === activeFilter
-    );
+    let items = processedBookingsList.filter((b) => b.status === activeFilter);
 
     if (sq) {
       items = items.filter(
-        (booking) =>
-          booking.packageTitle.toLowerCase().includes(sq) ||
-          booking.location.toLowerCase().includes(sq) ||
-          booking.bookingId.toLowerCase().includes(sq)
+        (b) =>
+          b.packageTitle.toLowerCase().includes(sq) ||
+          b.location.toLowerCase().includes(sq) ||
+          b.bookingId.toLowerCase().includes(sq)
       );
     }
 
@@ -112,7 +96,6 @@ const MyBookings = () => {
           return a.price - b.price;
         case "price-desc":
           return b.price - a.price;
-        case "date-desc":
         default:
           return new Date(b.date) - new Date(a.date);
       }
@@ -122,30 +105,41 @@ const MyBookings = () => {
   }, [activeFilter, searchQuery, sortOrder, processedBookingsList]);
 
   // --- Pagination ---
-  const totalPages = Math.ceil(
-    filteredAndSortedBookings.length / bookingsPerPage
-  );
+  const totalPages = Math.ceil(filteredAndSortedBookings.length / bookingsPerPage);
   const currentBookings = useMemo(() => {
     const start = (currentPage - 1) * bookingsPerPage;
-    const end = start + bookingsPerPage;
-    return filteredAndSortedBookings.slice(start, end);
+    return filteredAndSortedBookings.slice(start, start + bookingsPerPage);
   }, [currentPage, filteredAndSortedBookings]);
 
+  // --- Modal Handlers ---
   const openCancelModal = (booking) => {
     setBookingToCancel(booking);
     setIsModalOpen(true);
   };
   const closeModal = () => {
-    setIsModalOpen(false);
     setBookingToCancel(null);
-  };
-  const handleConfirmCancel = () => {
-    if (!bookingToCancel) return;
-    console.log(`Cancelling booking: ${bookingToCancel.bookingId}`);
-    //later
-    closeModal();
+    setIsModalOpen(false);
   };
 
+  const handleConfirmCancel = async () => {
+    if (!bookingToCancel) return;
+
+    try {
+      const res = await put(`/cancel-booking/${bookingToCancel.bookingId}`);
+      if (res.success) {
+        setAllBookingsData((prev) =>
+          prev.filter((b) => b.bookingId !== bookingToCancel.bookingId)
+        );
+        // console.log("Booking cancelled successfully");
+      }
+    } catch (err) {
+      // console.error(err);
+    } finally {
+      closeModal();
+    }
+  };
+
+  // --- Loading / Error States ---
   if (authLoading || isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -176,13 +170,13 @@ const MyBookings = () => {
     );
   }
 
+  // --- Render ---
   return (
     <>
       <h1 className="text-3xl font-bold text-gray-900 mb-8">My Bookings</h1>
 
-      {/* --- Premium Control Bar --- */}
+      {/* Tabs & Filters */}
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-6">
-        {/* Tabs */}
         <div className="flex items-center border-b border-gray-200 w-full md:w-auto">
           {filterTabs.map((tab) => (
             <button
@@ -201,7 +195,7 @@ const MyBookings = () => {
             </button>
           ))}
         </div>
-        {/* Filters */}
+
         <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
           {/* Sort */}
           <div className="relative w-full sm:w-48">
@@ -220,6 +214,7 @@ const MyBookings = () => {
             </select>
             <FiChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500 pointer-events-none" />
           </div>
+
           {/* Search */}
           <div className="relative w-full sm:w-64">
             <input
@@ -237,7 +232,7 @@ const MyBookings = () => {
         </div>
       </div>
 
-      {/* --- Bookings List --- */}
+      {/* Bookings List */}
       <div className="space-y-6">
         {currentBookings.length > 0 ? (
           currentBookings.map((booking) => (
@@ -260,9 +255,7 @@ const MyBookings = () => {
           ))
         ) : (
           <div className="text-center py-16">
-            <h3 className="text-2xl font-bold text-gray-800">
-              No Bookings Found
-            </h3>
+            <h3 className="text-2xl font-bold text-gray-800">No Bookings Found</h3>
             <p className="text-gray-600 mt-2">
               {searchQuery || activeFilter !== "Upcoming"
                 ? "Try adjusting your filters or search terms."
@@ -272,29 +265,24 @@ const MyBookings = () => {
         )}
       </div>
 
-      {/* --- Pagination --- */}
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="mt-12">
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-          />
+          <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
         </div>
       )}
 
-      {/* --- Cancellation Modal --- */}
+      {/* Cancel Modal */}
       {bookingToCancel && (
         <ConfirmationModal
           isOpen={isModalOpen}
           onClose={closeModal}
           onConfirm={handleConfirmCancel}
           title="Cancel Booking"
-          // Use flattened data for message
           message={`Are you sure you want to cancel your trip to ${bookingToCancel.location} (${bookingToCancel.bookingId})? Please check the cancellation policy.`}
           confirmText="Yes, Cancel Booking"
           confirmClass="bg-red-600 hover:bg-red-700"
-          icon={<FiAlertTriangle className="w-6 h-6 text-red-600" />} // Fixed icon color
+          icon={<FiAlertTriangle className="w-6 h-6 text-red-600" />}
         />
       )}
     </>

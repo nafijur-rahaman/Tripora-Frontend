@@ -141,6 +141,7 @@ const BookingWidget = ({ price, packageId, packageName, customerEmail }) => {
         date: selectedDate,
         travelers: selectedTravelers,
         paymentIntentId: paymentIntent.id,
+        status: "confirmed",
       };
 
       // Save transaction
