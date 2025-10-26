@@ -164,7 +164,7 @@ const CustomerDashboard = () => {
                         <h3 className="text-xl font-semibold text-gray-800">No Upcoming Trips</h3>
                         <p className="text-gray-600 mt-2 mb-4">Ready for your next adventure?</p>
                         <Link
-                            to="/packages" 
+                            to="/all_packages" 
                             className="inline-flex items-center space-x-2 px-5 py-2.5 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-300"
                         >
                             <span>Explore Packages</span>

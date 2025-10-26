@@ -45,32 +45,9 @@ const AdminLayout = () => {
       </AnimatePresence>
 
       {/* Main Content */}
-      <main className="flex-1">
-        <header className="flex items-center justify-between lg:justify-end h-20 bg-white border-b border-gray-100 px-6">
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden text-gray-700"
-            onClick={() => setIsMobileOpen(true)}
-          >
-            <FiMenu className="w-6 h-6" />
-          </button>
+      <main className="flex-1 ">
 
-          {/* User Info */}
-          <div className="flex items-center space-x-3 text-gray-800">
-            <img
-              src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2574&auto=format&fit=crop"
-              alt="Admin Avatar"
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <div>
-              <span className="font-semibold text-sm">Admin User</span>
-              <span className="block text-xs text-gray-500">View Profile</span>
-            </div>
-          </div>
-        </header>
-
-        {/* Outlet (Page Content) */}
-        <section className="px-8 py-4">
+        <section className="px-10 py-20">
           <Outlet />
         </section>
       </main>

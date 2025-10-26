@@ -105,7 +105,7 @@ const CustomerProfile = () => {
         try {
 
 
-            setPasswordMessage({ type: 'success', text: 'Password changed successfully!' });
+            setPasswordMessage({ type: 'success', text: 'Password changed implement later!' });
             setOldPassword('');
             setNewPassword('');
             setConfirmPassword('');
