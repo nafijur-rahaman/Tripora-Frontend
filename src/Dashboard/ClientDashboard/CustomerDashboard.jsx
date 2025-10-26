@@ -4,7 +4,7 @@ import {
     FiArrowRight, FiList, FiHeart, FiUser, FiMapPin,
     FiCalendar, FiDollarSign, FiLoader, FiAlertTriangle 
 } from 'react-icons/fi';
-import StatCard from '../../components/dashboard/StatCard';
+import StatCard from '../../components/Dashboard/StatCard';
 import useAuth from '../../hooks/UseAuth'; 
 import { useApi } from '../../hooks/UseApi'; 
 
