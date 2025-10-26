@@ -1,36 +1,80 @@
-import React from 'react';
-import { NavLink } from 'react-router';
+import React, { use } from "react";
+import { NavLink, useNavigate } from "react-router";
 import {
-  FiHome, FiBox, FiList, FiUsers, FiCreditCard,
-  FiUser, FiLogOut, FiClipboard, FiHeart
-} from 'react-icons/fi';
+  FiHome,
+  FiBox,
+  FiList,
+  FiUsers,
+  FiCreditCard,
+  FiUser,
+  FiLogOut,
+  FiClipboard,
+  FiHeart,
+} from "react-icons/fi";
+import useAuth from "../../hooks/UseAuth";
 
 const adminLinks = [
-    { icon: <FiHome />, name: 'Overview', href: '/admin-dashboard' },
-    { icon: <FiUser />, name: 'Profile', href: '/admin-dashboard/profile' },
-    { icon: <FiBox />, name: 'Add Package', href: '/admin-dashboard/add-package' },
-    { icon: <FiList />, name: 'Manage Packages', href: '/admin-dashboard/manage-packages' },
-    { icon: <FiUsers />, name: 'Manage Users', href: '/admin-dashboard/manage-users' },
-    { icon: <FiClipboard />, name: 'All Bookings', href: '/admin-dashboard/all-bookings' },
-    { icon: <FiCreditCard />, name: 'Payments History', href: '/admin-dashboard/payments-history' },
+  { icon: <FiHome />, name: "Overview", href: "/admin-dashboard" },
+  { icon: <FiUser />, name: "Profile", href: "/admin-dashboard/profile" },
+  {
+    icon: <FiBox />,
+    name: "Add Package",
+    href: "/admin-dashboard/add-package",
+  },
+  {
+    icon: <FiList />,
+    name: "Manage Packages",
+    href: "/admin-dashboard/manage-packages",
+  },
+  {
+    icon: <FiUsers />,
+    name: "Manage Users",
+    href: "/admin-dashboard/manage-users",
+  },
+  {
+    icon: <FiClipboard />,
+    name: "All Bookings",
+    href: "/admin-dashboard/all-bookings",
+  },
+  {
+    icon: <FiCreditCard />,
+    name: "Payments History",
+    href: "/admin-dashboard/payments-history",
+  },
 ];
-
 
 const customerLinks = [
-  { icon: <FiHome />, name: 'Dashboard', href: '/client-dashboard' },
-  { icon: <FiUser />, name: 'My Profile', href: '/client-dashboard/profile' },
-    { icon: <FiList />, name: 'My Bookings', href: '/client-dashboard/my-bookings' },
-    // { icon: <FiHeart />, name: 'My Wishlist', href: '/client-dashboard/wishlist' },
-    { icon: <FiCreditCard />, name: 'Payment History', href: '/client-dashboard/payment-history' },
+  { icon: <FiHome />, name: "Dashboard", href: "/client-dashboard" },
+  { icon: <FiUser />, name: "My Profile", href: "/client-dashboard/profile" },
+  {
+    icon: <FiList />,
+    name: "My Bookings",
+    href: "/client-dashboard/my-bookings",
+  },
+  // { icon: <FiHeart />, name: 'My Wishlist', href: '/client-dashboard/wishlist' },
+  {
+    icon: <FiCreditCard />,
+    name: "Payment History",
+    href: "/client-dashboard/payment-history",
+  },
 ];
 
-
-
 const DashboardSidebar = ({ userRole }) => {
-  const links = userRole === 'admin' ? adminLinks : customerLinks;
+  const links = userRole === "admin" ? adminLinks : customerLinks;
+  const navigate = useNavigate();
+
+  const { loading, LogoutUser } = useAuth();
+
+    const handleLogout = () => {
+    if (loading) return;
+    LogoutUser();
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   const activeClass = "bg-blue-50 text-blue-700 font-semibold";
-  const inactiveClass = "text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-900";
+  const inactiveClass =
+    "text-gray-500 font-medium hover:bg-gray-50 hover:text-gray-900";
 
   return (
     <div
@@ -63,7 +107,9 @@ const DashboardSidebar = ({ userRole }) => {
                ${isActive ? activeClass : inactiveClass}`
             }
           >
-            {React.cloneElement(link.icon, { className: 'w-5 h-5 flex-shrink-0' })}
+            {React.cloneElement(link.icon, {
+              className: "w-5 h-5 flex-shrink-0",
+            })}
             <span>{link.name}</span>
           </NavLink>
         ))}
@@ -71,14 +117,14 @@ const DashboardSidebar = ({ userRole }) => {
 
       {/* Logout */}
       <div className="p-6 border-t border-gray-100">
-        <a
-          href="/logout"
+        <button
+          onClick={handleLogout}
           className={`flex items-center space-x-3 px-4 py-3.5 rounded-lg
                       transition-all duration-200 ${inactiveClass}`}
         >
           <FiLogOut className="w-5 h-5 flex-shrink-0" />
           <span className="font-medium">Log Out</span>
-        </a>
+        </button>
       </div>
     </div>
   );

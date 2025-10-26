@@ -4,8 +4,8 @@ import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { AuthContext } from "../Context/AuthContext";
 
-const BASE_URL = "http://localhost:3000/api";
-// const BASE_URL = "https://tripora-server.vercel.app/api";
+// const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://tripora-server.vercel.app/api";
 
 export const useApi = () => {
   const { token } = useContext(AuthContext); // use Firebase token
