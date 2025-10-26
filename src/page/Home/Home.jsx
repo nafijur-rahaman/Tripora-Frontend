@@ -7,6 +7,7 @@ import JourneyTimeline from '../../components/JourneyTimeline/JourneyTimeline';
 import TourShowcase from '../../components/TourShowcase/TourShowcase';
 import PopularDestinations from '../../components/PopularDestinations/PopularDestinations';
 import TravelInspiration from '../../components/TravelInspiration/TravelInspiration';
+import WhyChooseUs from '../../components/WhyChooseUs/WhyChooseUs';
 
 
 const Home = () => {
@@ -17,7 +18,9 @@ const Home = () => {
          <JourneySection></JourneySection>
          <TravelInspiration></TravelInspiration>
          {/* <JourneyTimeline></JourneyTimeline> */}
-         <TourShowcase></TourShowcase>
+         {/* <TourShowcase></TourShowcase> */}
+         
+         <WhyChooseUs></WhyChooseUs>
          <Testimonials></Testimonials>
         </div>
     );
