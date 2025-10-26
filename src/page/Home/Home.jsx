@@ -8,6 +8,8 @@ import TourShowcase from '../../components/TourShowcase/TourShowcase';
 import PopularDestinations from '../../components/PopularDestinations/PopularDestinations';
 import TravelInspiration from '../../components/TravelInspiration/TravelInspiration';
 import WhyChooseUs from '../../components/WhyChooseUs/WhyChooseUs';
+import Newsletter from '../../components/NewsLetter/NewsLetter';
+
 
 
 const Home = () => {
@@ -21,6 +23,7 @@ const Home = () => {
          {/* <TourShowcase></TourShowcase> */}
          
          <WhyChooseUs></WhyChooseUs>
+        <Newsletter></Newsletter>
          <Testimonials></Testimonials>
         </div>
     );
