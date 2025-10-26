@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { FiArrowRight, FiList, FiHeart, FiUser, FiMapPin, FiCalendar } from 'react-icons/fi';
-import StatCard from '../../components/dashboard/StatCard'; // Re-using the admin StatCard!
+import StatCard from '../../components/Dashboard/StatCard';
 
 // --- Dummy Data for the Customer ---
 const customerData = {

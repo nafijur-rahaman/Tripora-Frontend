@@ -4,11 +4,9 @@ import {
     FiCheckCircle, FiXCircle, FiLoader
 } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
-import Pagination from "../../components/Pagination/Pagination"; // Adjust path if needed
-import { useApi } from "../../hooks/UseApi"; // Adjust path if needed
-import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal'; // Adjust path if needed
-
-// Updated filter tabs - Pending removed
+import Pagination from "../../components/Pagination/Pagination"; 
+import { useApi } from "../../hooks/UseApi"; 
+import ConfirmationModal from '../../components/ConfirmationModal/ConfirmationModal'; 
 const filterTabs = ['All', 'Succeeded', 'Refunded', 'Failed'];
 
 const PaymentsPage = () => {
@@ -31,7 +29,7 @@ const PaymentsPage = () => {
             setIsLoading(true);
             setError(null);
             try {
-                const res = await get("/api/get-transactions");
+                const res = await get("/get-transactions");
                 if (res?.success && Array.isArray(res.data)) {
                     setAllPayments(res.data);
                 } else {
@@ -97,8 +95,7 @@ const PaymentsPage = () => {
     const handleConfirmRefund = () => {
         if (!paymentToActOn) return;
         console.log(`Refunding payment: ${paymentToActOn.paymentIntentId}`);
-        // --- API call logic ---
-        // post('/api/payments/refund', { ... }).then(...)
+        //later implement
         closeModal();
     };
 
