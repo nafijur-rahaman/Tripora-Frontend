@@ -9,7 +9,7 @@ import PopularDestinations from '../../components/PopularDestinations/PopularDes
 import TravelInspiration from '../../components/TravelInspiration/TravelInspiration';
 import WhyChooseUs from '../../components/WhyChooseUs/WhyChooseUs';
 import Newsletter from '../../components/NewsLetter/NewsLetter';
-import FaqChatbot from '../../components/FaqChatbot/FaqChatbot';
+
 
 
 
@@ -18,7 +18,7 @@ const Home = () => {
     return (
         <div>
          <Hero></Hero>
-         <FaqChatbot></FaqChatbot>
+
          <PopularDestinations></PopularDestinations>
          <JourneySection></JourneySection>
          <TravelInspiration></TravelInspiration>

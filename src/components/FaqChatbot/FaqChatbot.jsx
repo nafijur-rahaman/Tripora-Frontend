@@ -31,7 +31,7 @@ const tripData = [
 
 ];
 
-export default function TriporaBot() {
+export default function FaqChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { sender: 'bot', text: "Hello! I'm Tripora AI. Looking for the perfect travel package?" },
