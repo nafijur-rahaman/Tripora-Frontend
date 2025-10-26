@@ -5,7 +5,7 @@ import {
 } from "react-icons/fi";
 import { Link } from "react-router"; 
 import BookingsChart from "../../components/Dashboard/BookingsChart";
-import StatCard from "../../components/dashboard/StatCard"; 
+import StatCard from "../../components/Dashboard/StatCard"; 
 import { useApi } from "../../hooks/UseApi"; 
 import useAuth from "../../hooks/UseAuth";
 
